@@ -9,14 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ExampleCommand extends Command {
-  public ExampleCommand() {
+public class TeleopDrive extends Command {
+
+  public TeleopDrive() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_subsystem);
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -27,6 +29,12 @@ public class ExampleCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+      // get power values from the controller
+      double leftPower = Robot.oi.controller.getRawAxis(RobotMap.leftVerticalAxis);
+      double rightPower = Robot.oi.controller.getRawAxis(RobotMap.rightVerticalAxis);
+
+      // Set power of the wheels
+      Robot.drivetrain.Drive(leftPower, rightPower);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,5 +52,6 @@ public class ExampleCommand extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+      end();
   }
 }
