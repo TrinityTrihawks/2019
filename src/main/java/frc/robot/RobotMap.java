@@ -24,16 +24,16 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static final int controller = 1; // id of controller with respect to computer
-  public static final int leftVerticalAxis = 3; // id of left vertical axis within controller
-  public static final int rightVerticalAxis = 1; //id of right vertical axis within controller
+  public static final int controller = 0 ; // id of controller with respect to computer
+  public static final int leftVerticalAxis = 1; // id of left vertical axis within controller
+  public static final int rightVerticalAxis = 3; //id of right vertical axis within controller
 
   // port numbers of TalonSRXs on the RoboRio
-  // TODO: use correct port numbers for wheels
-  public static final int frontLeftWheel = 1;
+  // TODO: use correct port numbers 2019 robot wheels
+  public static final int frontLeftWheel = 3;
   public static final int frontRightWheel = 2;
-  public static final int backLeftWheel = 3;
-  public static final int backRightWheel = 4;
+  public static final int backLeftWheel = 0;
+  public static final int backRightWheel = 1;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
