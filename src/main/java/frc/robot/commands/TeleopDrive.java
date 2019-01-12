@@ -30,8 +30,25 @@ public class TeleopDrive extends Command {
   @Override
   protected void execute() {
       // get power values from the controller
-      double leftPower = Robot.oi.controller.getRawAxis(RobotMap.leftVerticalAxis);
-      double rightPower = Robot.oi.controller.getRawAxis(RobotMap.rightVerticalAxis);
+
+      double magnitude = Robot.oi.controller.getRawAxis(RobotMap.verticalAxis);
+      double twist = Robot.oi.controller.getTwist();
+
+      //magnitude *= .5;
+      //twist *= .5;
+
+      double leftPower = magnitude - twist;
+      double rightPower = magnitude + twist;
+
+      // scale power to valid range and keep the raito between the left and right powers equal
+      if(Math.abs(leftPower) > 1) {
+        leftPower = leftPower / Math.abs(leftPower);
+        rightPower = rightPower / Math.abs(leftPower);
+      } else if(Math.abs(rightPower) > 1) {
+        rightPower = rightPower / Math.abs(rightPower);
+        leftPower = leftPower / Math.abs(rightPower);
+      }
+      System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower);
 
       // Set power of the wheels
       Robot.drivetrain.Drive(leftPower, rightPower);

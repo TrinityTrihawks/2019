@@ -8,10 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.cscore.AxisCamera;
 import frc.robot.subsystems.Drivetrain;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +29,11 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  AxisCamera camera;
+
+  final int IMG_WIDTH = 320;
+	final int IMG_HEIGHT = 240;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -37,6 +44,11 @@ public class Robot extends TimedRobot {
     //m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
+		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		System.out.println("Front camera initialized properly");
+		 
   }
 
   /**
