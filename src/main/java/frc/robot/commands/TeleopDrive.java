@@ -31,24 +31,33 @@ public class TeleopDrive extends Command {
   protected void execute() {
       // get power values from the controller
 
-      double magnitude = Robot.oi.controller.getRawAxis(RobotMap.verticalAxis);
-      double twist = Robot.oi.controller.getTwist();
+      double magnitude = Robot.oi.getJoystickVerticalAxis();
+      double twist = Robot.oi.getJoystickTwist();
+      double slider = Robot.oi.getSlider();
+    if(Math.abs(magnitude) < 0.4) {
+      magnitude = 0;
+    }
 
+    if(Math.abs(twist) < 0.2) {
+      twist = 0;
+    }
+ 
       //magnitude *= .5;
-      //twist *= .5;
+      twist *= .2;
 
-      double leftPower = magnitude - twist;
-      double rightPower = magnitude + twist;
+      double leftPower = (magnitude + twist) * slider;
+      double rightPower = (magnitude - twist) * slider;
 
-      // scale power to valid range and keep the raito between the left and right powers equal
-      if(Math.abs(leftPower) > 1) {
-        leftPower = leftPower / Math.abs(leftPower);
-        rightPower = rightPower / Math.abs(leftPower);
-      } else if(Math.abs(rightPower) > 1) {
-        rightPower = rightPower / Math.abs(rightPower);
-        leftPower = leftPower / Math.abs(rightPower);
-      }
-      System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower);
+
+      //scale power to valid range and keep the ratio between the left and right powers equal
+      // if(Math.abs(leftPower) > 1) {
+      //   leftPower = leftPower / Math.abs(leftPower);
+      //   rightPower = rightPower / Math.abs(leftPower);
+      // } else if(Math.abs(rightPower) > 1) {
+      //   rightPower = rightPower / Math.abs(rightPower);
+      //   leftPower = leftPower / Math.abs(rightPower);
+      // }
+      System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
       // Set power of the wheels
       Robot.drivetrain.Drive(leftPower, rightPower);

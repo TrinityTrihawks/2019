@@ -16,6 +16,22 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 
   public Joystick controller = new Joystick(RobotMap.controller);
+
+  public double getJoystickVerticalAxis() {
+    return -1 * controller.getRawAxis(RobotMap.verticalAxis);
+  }
+
+  public double getJoystickTwist() {
+    return controller.getTwist();
+  }
+
+  public double getJoystickThrottle() {
+    return controller.getThrottle();
+  }
+  public double getSlider() {
+		double SliderVal = ( controller .getRawAxis(3)+1)/2;
+		return SliderVal;
+	}
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

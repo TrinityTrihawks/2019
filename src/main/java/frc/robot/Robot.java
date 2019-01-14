@@ -61,6 +61,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
+    SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
+    SmartDashboard.putNumber("Joystick throttle", oi.getJoystickThrottle());
   }
 
   /**

@@ -31,9 +31,9 @@ public class RobotMap {
 
   // port numbers of TalonSRXs on the RoboRio
   // TODO: use correct port numbers 2019 robot wheels
-  public static final int frontLeftWheel = 0;
-  public static final int frontRightWheel = 3;
-  public static final int backLeftWheel = 1;
+  public static final int frontLeftWheel = 1;
+  public static final int frontRightWheel = 0;
+  public static final int backLeftWheel = 3;
   public static final int backRightWheel = 2;
 
   // port number of PigeonIMU gyro on the RoboRio

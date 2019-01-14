@@ -41,8 +41,8 @@ public class Drivetrain extends Subsystem {
     slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
     //TODO: get rid of these for new drivetrain
-    masterLeft.setInverted(true);
-    slaveLeft.setInverted(true);
+    masterRight.setInverted(true);
+    slaveRight.setInverted(true);
 
     // create the gyro
     gyro = new PigeonIMU(RobotMap.gyro);
