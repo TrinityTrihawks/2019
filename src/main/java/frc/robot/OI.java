@@ -25,11 +25,8 @@ public class OI {
     return controller.getTwist();
   }
 
-  public double getJoystickThrottle() {
-    return controller.getThrottle();
-  }
   public double getSlider() {
-		double SliderVal = ( controller .getRawAxis(3)+1)/2;
+		double SliderVal = (controller.getRawAxis(3) + 1) / 2;
 		return SliderVal;
 	}
   //// CREATING BUTTONS

@@ -32,7 +32,9 @@ public class Robot extends TimedRobot {
   AxisCamera camera;
 
   final int IMG_WIDTH = 320;
-	final int IMG_HEIGHT = 240;
+  final int IMG_HEIGHT = 240;
+  
+  Ultrasonics ultrasonics;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -47,7 +49,9 @@ public class Robot extends TimedRobot {
 
     camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-		System.out.println("Front camera initialized properly");
+    System.out.println("Front camera initialized properly");
+    
+    ultrasonics = new Ultrasonics();
 		 
   }
 
@@ -63,7 +67,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
-    SmartDashboard.putNumber("Joystick throttle", oi.getJoystickThrottle());
+    SmartDashboard.putNumber("Joystick slider", oi.getSlider());
+    SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
+    SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
   }
 
   /**
