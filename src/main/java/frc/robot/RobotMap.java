@@ -39,4 +39,8 @@ public class RobotMap {
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
 
+  // Ultrasonic port numbers
+  public static final int leftUltrasonic = 1;
+  public static final int rightUltrasonic = 0;
+
 }

@@ -9,8 +9,8 @@ public class Ultrasonics {
   AnalogInput ultrasonicRight;
 
   public Ultrasonics() {
-    ultrasonicLeft = new AnalogInput(1);
-    ultrasonicRight = new AnalogInput(2);
+    ultrasonicLeft = new AnalogInput(RobotMap.leftUltrasonic);
+    ultrasonicRight = new AnalogInput(RobotMap.rightUltrasonic);
   }
 
   public double getLeftDistance() {
