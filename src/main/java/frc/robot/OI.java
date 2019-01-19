@@ -28,7 +28,50 @@ public class OI {
   public double getSlider() {
 		double SliderVal = (controller.getRawAxis(3) + 1) / 2;
 		return SliderVal;
-	}
+  }
+  
+  public boolean getJoystickTrigger() {
+    // System.out.println("Pressed trigger");
+    return controller.getTrigger();
+  }
+
+  public boolean getJoystickTopLeftButton() {
+    // System.out.println("Pressed top left button");
+    return controller.getRawButton(4);
+  } 
+
+  public boolean getJoystickTopRightButton() {
+    // System.out.println("Pressed top right button");
+    return controller.getRawButton(5);
+  }
+
+  public void testAllButtons() {
+    // if(controller.getRawButton(1)) {
+    //   System.out.println("Pressed button 1");
+    // } else if(controller.getRawButton(2)) {
+    // System.out.println("Pressed button 2");
+    // } else if(controller.getRawButton(3)) {
+    // System.out.println("Pressed button 3");
+    // } else if(controller.getRawButton(4)) {
+    // System.out.println("Pressed button 4");
+    // } else if(controller.getRawButton(5)) {
+    //   System.out.println("Pressed button 5");
+    // } else if(controller.getRawButton(6)) {
+    //   System.out.println("Pressed button 6");
+    // } else if(controller.getRawButton(7)) {
+    //   System.out.println("Pressed Button 7");
+    // } else if(controller.getRawButton(8)) {
+    //   System.out.println("Pressed button 8");
+    // } else if(controller.getRawButton(9)) {
+    //   System.out.println("Pressed button 9");
+    // } else if(controller.getRawButton(10)) {
+    //   System.out.println("Pressed button 10");
+    // } else if(controller.getRawButton(11)) {
+    //   System.out.println("Pressed button 11");
+    // } else if(controller.getRawButton(12)) {
+    //   System.out.println("Pressed button 12");
+    // }
+  }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

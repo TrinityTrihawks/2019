@@ -27,14 +27,17 @@ public class Pneumatics extends Subsystem {
 
   public void goForward() {
     suction.set(DoubleSolenoid.Value.kForward);
+    System.out.println("Pneumatics forward");
   }
 
   public void goBackwards() {
     suction.set(DoubleSolenoid.Value.kReverse);
+    System.out.println("Pneumatics reverse");
   }
 
   public void off() {
     suction.set(DoubleSolenoid.Value.kOff);
+    System.out.println("Pneumatics off");
   }
 
 

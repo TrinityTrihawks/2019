@@ -29,11 +29,11 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      // get power values from the controller
+    // get power values from the controller
+    double magnitude = Robot.oi.getJoystickVerticalAxis();
+    double twist = Robot.oi.getJoystickTwist();
+    double slider = Robot.oi.getSlider();
 
-      double magnitude = Robot.oi.getJoystickVerticalAxis();
-      double twist = Robot.oi.getJoystickTwist();
-      double slider = Robot.oi.getSlider();
     if(Math.abs(magnitude) < 0.4) {
       magnitude = 0;
     }
@@ -42,25 +42,36 @@ public class TeleopDrive extends Command {
       twist = 0;
     }
  
-      //magnitude *= .5;
-      twist *= .2;
+    //magnitude *= .5;
+    twist *= .2;
 
-      double leftPower = (magnitude + twist) * slider;
-      double rightPower = (magnitude - twist) * slider;
+    double leftPower = (magnitude + twist) * slider;
+    double rightPower = (magnitude - twist) * slider;
 
+    //scale power to valid range and keep the ratio between the left and right powers equal
+    // if(Math.abs(leftPower) > 1) {
+    //   leftPower = leftPower / Math.abs(leftPower);
+    //   rightPower = rightPower / Math.abs(leftPower);
+    // } else if(Math.abs(rightPower) > 1) {
+    //   rightPower = rightPower / Math.abs(rightPower);
+    //   leftPower = leftPower / Math.abs(rightPower);
+    // }
+    // System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
-      //scale power to valid range and keep the ratio between the left and right powers equal
-      // if(Math.abs(leftPower) > 1) {
-      //   leftPower = leftPower / Math.abs(leftPower);
-      //   rightPower = rightPower / Math.abs(leftPower);
-      // } else if(Math.abs(rightPower) > 1) {
-      //   rightPower = rightPower / Math.abs(rightPower);
-      //   leftPower = leftPower / Math.abs(rightPower);
-      // }
-      System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
+    // Set power of the wheels
+    Robot.drivetrain.Drive(leftPower, rightPower);
 
-      // Set power of the wheels
-      Robot.drivetrain.Drive(leftPower, rightPower);
+    if(Robot.oi.getJoystickTrigger()) {
+      Robot.pneumatics.off();
+      System.out.println("Commanding pneumatics off");
+    } else if (Robot.oi.getJoystickTopLeftButton()) {
+      Robot.pneumatics.goForward();
+      System.out.println("Commanding pneumatics forward");
+    } else if(Robot.oi.getJoystickTopRightButton()) {  
+      Robot.pneumatics.goBackwards();
+      System.out.println("Commanding pneumatics backwards");
+    } 
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

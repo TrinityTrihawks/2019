@@ -9,6 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,6 +25,7 @@ import frc.robot.subsystems.Drivetrain;
  * project.
  */
 import frc.robot.subsystems.Pneumatics;
+
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
   public static Pneumatics pneumatics = new Pneumatics();
@@ -49,8 +52,13 @@ public class Robot extends TimedRobot {
     // chooser.addObject("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
 
+
     camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
-		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+    CameraServer.getInstance().startAutomaticCapture(camera);
+
+    // CameraServer.getInstance().getServer().setSource(source);
+    // NetworkTableInstance.getDefault().getTable("").putData("CameraSelection", camera.getName());
+		// camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     System.out.println("Front camera initialized properly");
     
     ultrasonics = new Ultrasonics();
@@ -72,6 +80,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
     SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
     SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
+
+    oi.testAllButtons();
   }
 
   /**

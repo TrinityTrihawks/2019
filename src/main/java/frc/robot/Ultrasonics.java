@@ -14,11 +14,17 @@ public class Ultrasonics {
   }
 
   public double getLeftDistance() {
-      return ultrasonicLeft.getVoltage() / (0.0048828) / 5;
+    double leftVoltage = ultrasonicLeft.getVoltage();
+    return scaleVoltageValue(leftVoltage);
   }
 
   public double getRightDistance() {
-      return ultrasonicRight.getVoltage() / (0.0048828) / 5;
+    double rightVoltage = ultrasonicRight.getVoltage();
+    return scaleVoltageValue(rightVoltage);
+  }
+
+  private double scaleVoltageValue(double voltageValue) {
+    return voltageValue / (0.0048828) / 5;
   }
 
 }
