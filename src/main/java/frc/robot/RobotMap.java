@@ -42,5 +42,8 @@ public class RobotMap {
   // Ultrasonic port numbers
   public static final int leftUltrasonic = 1;
   public static final int rightUltrasonic = 0;
+  //pneumatics
+  public static final int solenoidForwardChannel = 4;
+  public static final int solenoidReverseChannel = 2;
 
 }

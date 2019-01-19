@@ -22,8 +22,10 @@ import frc.robot.subsystems.Drivetrain;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+import frc.robot.subsystems.Pneumatics;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
+  public static Pneumatics pneumatics = new Pneumatics();
   public static OI oi;
 
   Command m_autonomousCommand;
