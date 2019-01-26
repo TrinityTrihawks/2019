@@ -46,4 +46,7 @@ public class RobotMap {
   public static final int solenoidForwardChannel = 1;
   public static final int solenoidReverseChannel = 0;
 
+  //TODO: measure wheel circumference
+  public static final double wheelCircumference = 0;
+
 }

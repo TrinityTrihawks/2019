@@ -40,7 +40,7 @@ public class Drivetrain extends Subsystem {
     slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
     slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
-    //TODO: get rid of these for new drivetrain
+    //TODO: get rid of these for new drivetrain?
     masterRight.setInverted(true);
     slaveRight.setInverted(true);
 
@@ -53,6 +53,22 @@ public class Drivetrain extends Subsystem {
     // Set power to left and right sides of the robot
     masterLeft.set(ControlMode.PercentOutput, leftPower);
     masterRight.set(ControlMode.PercentOutput, rightPower);
+  }
+
+  //TODO: figure out to which TalonSRXs the encoders are wired
+
+  public double getLeftDistance() {
+    double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
+    return encoderTicksToDistance(leftTicks);
+  }
+
+  public double getRightDistance() {
+    double rightTicks = masterRight.getSensorCollection().getQuadraturePosition();
+    return encoderTicksToDistance(rightTicks);
+  }
+
+  public double encoderTicksToDistance(double encoderTicks) {
+    return encoderTicks / 4096 * RobotMap.wheelCircumference;
   }
 
   @Override
