@@ -80,6 +80,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
     SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
     SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
+    SmartDashboard.putNumber("Left encoder", drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("Right encoder", drivetrain.getRightDistance());
 
     oi.testAllButtons();
   }
@@ -143,6 +145,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    Scheduler.getInstance().run();
   }
 
   /**

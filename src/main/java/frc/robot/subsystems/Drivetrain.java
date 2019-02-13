@@ -7,13 +7,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.*;
-
 
 
 /**
@@ -28,6 +28,8 @@ public class Drivetrain extends Subsystem {
   TalonSRX slaveRight;
 
   PigeonIMU gyro;
+  Encoder encoderLeft;
+  Encoder encoderRight;
 
   public Drivetrain(){
     // create the wheels
@@ -40,12 +42,15 @@ public class Drivetrain extends Subsystem {
     slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
     slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
-    //TODO: get rid of these for new drivetrain?
     masterRight.setInverted(true);
     slaveRight.setInverted(true);
 
     // create the gyro
     gyro = new PigeonIMU(RobotMap.gyro);
+
+    //create the encoders
+    encoderLeft = new Encoder(RobotMap.leftEncoderSourceA, RobotMap.leftEncoderSourceB);
+    encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
   }
   
 
@@ -55,20 +60,27 @@ public class Drivetrain extends Subsystem {
     masterRight.set(ControlMode.PercentOutput, rightPower);
   }
 
-  //TODO: figure out to which TalonSRXs the encoders are wired
-
   public double getLeftDistance() {
-    double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
-    return encoderTicksToDistance(leftTicks);
+    // double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
+    double leftTicks = encoderLeft.get();
+    // return leftTicks;
+     return encoderTicksToDistance(leftTicks);
   }
 
   public double getRightDistance() {
-    double rightTicks = masterRight.getSensorCollection().getQuadraturePosition();
-    return encoderTicksToDistance(rightTicks);
+    // double rightTicks = masterRight.getSensorCollection().getQuadraturePosition();
+    double rightTicks = encoderRight.get();
+    // return rightTicks;
+     return encoderTicksToDistance(rightTicks);
+  }
+
+  public void resetDistance() {
+    encoderLeft.reset();
+    encoderRight.reset();
   }
 
   public double encoderTicksToDistance(double encoderTicks) {
-    return encoderTicks / 4096 * RobotMap.wheelCircumference;
+    return encoderTicks / 360   * RobotMap.wheelCircumference;
   }
 
   @Override

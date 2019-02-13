@@ -16,15 +16,15 @@ package frc.robot;
 public class RobotMap {
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
+  // public static   int leftMotor = 1;
   // public static int rightMotor = 2;
 
   // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
+  
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static final int controller = 0 ; // id of controller with respect to computer
+  public static final int  controller = 0 ; // id of controller with respect to computer
   public static final int verticalAxis = 1; // id of vertical axis within controller
 
   public static final String cameraIPAddress = "10.42.15.39";
@@ -39,14 +39,21 @@ public class RobotMap {
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
 
-  // Ultrasonic port numbers
+  // Ultrasonic PWM ports on the RoboRio
   public static final int leftUltrasonic = 0;
   public static final int rightUltrasonic = 1;
-  //pneumatics
+
+  // Encoder DIO ports in the RoboRio, two for each encoder
+  public static final int leftEncoderSourceA = 1;
+  public static final int leftEncoderSourceB = 0;
+  public static final int rightEncoderSourceA = 2;
+  public static final int rightEncoderSourceB = 3;
+
+  //Pneumatics ports in the Pneumatics Control Module (PCM)
   public static final int solenoidForwardChannel = 1;
   public static final int solenoidReverseChannel = 0;
 
-  //TODO: measure wheel circumference
-  public static final double wheelCircumference = 0;
+  //wheel circumference in inches
+  public static final double wheelCircumference = 18.84955592153876;
 
 }

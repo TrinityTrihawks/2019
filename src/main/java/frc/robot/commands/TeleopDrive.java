@@ -33,20 +33,31 @@ public class TeleopDrive extends Command {
     double magnitude = Robot.oi.getJoystickVerticalAxis();
     double twist = Robot.oi.getJoystickTwist();
     double slider = Robot.oi.getSlider();
+    boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
+    System.out.println("Drive straight: "+shouldDriveStraight);
+
+    if(slider < 0.1) {
+      slider = 0.1;
+    }
+
+    if(shouldDriveStraight == true) {
+      twist = 0;
+    }
+
 
     if(Math.abs(magnitude) < 0.4) {
       magnitude = 0;
     }
 
-    if(Math.abs(twist) < 0.2) {
-      twist = 0;
-    }
+    // if(Math.abs(twist) < 0.2) {
+    //   twist = 0;
+    // }
  
     //magnitude *= .5;
-    twist *= .2;
+    twist *= .5;
 
-    double leftPower = (magnitude + twist) * slider;
-    double rightPower = (magnitude - twist) * slider;
+    double leftPower = magnitude * slider + twist;
+    double rightPower = magnitude * slider - twist;
 
     //scale power to valid range and keep the ratio between the left and right powers equal
     // if(Math.abs(leftPower) > 1) {
@@ -59,6 +70,8 @@ public class TeleopDrive extends Command {
     // System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
     // Set power of the wheels
+    System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
+
     Robot.drivetrain.Drive(leftPower, rightPower);
 
     if(Robot.oi.getJoystickTrigger()) {
@@ -71,6 +84,11 @@ public class TeleopDrive extends Command {
       Robot.pneumatics.goBackwards();
       System.out.println("Commanding pneumatics backwards");
     } 
+
+    double leftEncoder = Robot.drivetrain.getLeftDistance();
+    double rightEncoder = Robot.drivetrain.getRightDistance();
+    System.out.println("Left Encoder: "+ leftEncoder);
+    System.out.println("Right encoder: "+ rightEncoder);
 
   }
 
