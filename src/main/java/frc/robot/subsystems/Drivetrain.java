@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.motorcontrol.*;
 
 
 /**
@@ -51,6 +51,12 @@ public class Drivetrain extends Subsystem {
     //create the encoders
     encoderLeft = new Encoder(RobotMap.leftEncoderSourceA, RobotMap.leftEncoderSourceB);
     encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
+
+    // masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    // masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+
+    // slaveRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+
   }
   
 
@@ -58,6 +64,12 @@ public class Drivetrain extends Subsystem {
     // Set power to left and right sides of the robot
     masterLeft.set(ControlMode.PercentOutput, leftPower);
     masterRight.set(ControlMode.PercentOutput, rightPower);
+
+    boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
+    boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
+
+    System.out.println("Fwd closed: "+ fwdClosed);
+    System.out.println("Rev closed: "+ revClosed);
   }
 
   public double getLeftDistance() {
