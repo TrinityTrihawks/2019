@@ -28,18 +28,18 @@ import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
-  public static Pneumatics pneumatics = new Pneumatics();
+  // public static Pneumatics pneumatics = new Pneumatics();
   public static OI oi;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  AxisCamera camera;
+  //AxisCamera camera;
 
   final int IMG_WIDTH = 320;
   final int IMG_HEIGHT = 240;
   
-  Ultrasonics ultrasonics;
+  // Ultrasonics ultrasonics;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -53,15 +53,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
 
 
-    camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
-    CameraServer.getInstance().startAutomaticCapture(camera);
+    // camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
+    // CameraServer.getInstance().startAutomaticCapture(camera);
 
     // CameraServer.getInstance().getServer().setSource(source);
     // NetworkTableInstance.getDefault().getTable("").putData("CameraSelection", camera.getName());
 		// camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-    System.out.println("Front camera initialized properly");
+    //System.out.println("Front camera initialized properly");
     
-    ultrasonics = new Ultrasonics();
+    // ultrasonics = new Ultrasonics();
 		 
   }
 
@@ -78,12 +78,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
-    SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
-    SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
-    SmartDashboard.putNumber("Left encoder", drivetrain.getLeftDistance());
-    SmartDashboard.putNumber("Right encoder", drivetrain.getRightDistance());
+    // SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
+    // SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
 
-    oi.testAllButtons();
+    // oi.testAllButtons();
   }
 
   /**
@@ -145,7 +143,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
     Scheduler.getInstance().run();
   }
 

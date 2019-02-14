@@ -39,6 +39,20 @@ public class TeleopDrive extends Command {
     if(slider < 0.1) {
       slider = 0.1;
     }
+    boolean trigger = Robot.oi.getJoystickTrigger();
+
+    if (trigger)
+    {
+      Robot.drivetrain.DisableLimitSwitch();
+    }
+    else
+    {
+      Robot.drivetrain.EnableLimitSwitch();
+    }
+
+    if(Math.abs(magnitude) < 0.4) {
+      magnitude = 0;
+    }
 
     if(shouldDriveStraight == true) {
       twist = 0;
@@ -74,16 +88,16 @@ public class TeleopDrive extends Command {
 
     Robot.drivetrain.Drive(leftPower, rightPower);
 
-    if(Robot.oi.getJoystickTrigger()) {
-      Robot.pneumatics.off();
-      System.out.println("Commanding pneumatics off");
-    } else if (Robot.oi.getJoystickTopLeftButton()) {
-      Robot.pneumatics.goForward();
-      System.out.println("Commanding pneumatics forward");
-    } else if(Robot.oi.getJoystickTopRightButton()) {  
-      Robot.pneumatics.goBackwards();
-      System.out.println("Commanding pneumatics backwards");
-    } 
+    // if(Robot.oi.getJoystickTrigger()) {
+    //   Robot.pneumatics.off();
+    //   System.out.println("Commanding pneumatics off");
+    // } else if (Robot.oi.getJoystickTopLeftButton()) {
+    //   Robot.pneumatics.goForward();
+    //   System.out.println("Commanding pneumatics forward");
+    // } else if(Robot.oi.getJoystickTopRightButton()) {  
+    //   Robot.pneumatics.goBackwards();
+    //   System.out.println("Commanding pneumatics backwards");
+    // } 
 
     double leftEncoder = Robot.drivetrain.getLeftDistance();
     double rightEncoder = Robot.drivetrain.getRightDistance();

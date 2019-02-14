@@ -24,8 +24,8 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static final int  controller = 0 ; // id of controller with respect to computer
-  public static final int verticalAxis = 1; // id of vertical axis within controller
+  public static final int controller = 0 ; // id of controller with respect to computer
+  public static final int verticalAxis = 2; // id of vertical axis within controller
 
   public static final String cameraIPAddress = "10.42.15.39";
 

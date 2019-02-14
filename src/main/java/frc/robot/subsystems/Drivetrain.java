@@ -38,6 +38,9 @@ public class Drivetrain extends Subsystem {
     slaveLeft = new TalonSRX(RobotMap.backLeftWheel);
     slaveRight = new TalonSRX(RobotMap.backRightWheel);
 
+    // masterRight.configSelectedFeedbackSensor(FeedbackDevice.Tachometer);
+    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
     // set the back wheels to mirror the front wheels
     slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
     slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
@@ -58,7 +61,18 @@ public class Drivetrain extends Subsystem {
     // slaveRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
   }
+
+  public void EnableLimitSwitch()
+  {
+    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+  }
   
+  public void DisableLimitSwitch()
+  {
+    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+  }
 
   public void Drive(double leftPower, double rightPower){
     // Set power to left and right sides of the robot
