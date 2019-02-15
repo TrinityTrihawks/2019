@@ -28,12 +28,16 @@ public class AutonomousDriveForward extends Command {
   @Override
   protected void initialize() {
     Robot.drivetrain.Drive(0.5, 0.5);
+    System.out.println("Drive forward command starting");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    double leftEncoder = Robot.drivetrain.getLeftDistance();
+    double rightEncoder = Robot.drivetrain.getRightDistance();
+    System.out.println("Left Encoder: "+ leftEncoder);
+    System.out.println("Right encoder: "+ rightEncoder);
   }
 
   // Make this return true when this Command no longer needs to run execute()

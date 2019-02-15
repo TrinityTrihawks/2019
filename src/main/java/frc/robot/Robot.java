@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
+import frc.robot.commands.AutonomousDriveForward;
 import frc.robot.subsystems.Drivetrain;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -111,7 +112,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    AutonomousDriveForward driveForwardCommand = new AutonomousDriveForward(12);
+    driveForwardCommand.start();
+    // m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -121,9 +124,9 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.start();
+    // }
   }
 
   /**
