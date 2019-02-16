@@ -92,8 +92,8 @@ public class Drivetrain extends Subsystem {
     boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
     boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
 
-    System.out.println("Fwd closed: "+ fwdClosed);
-    System.out.println("Rev closed: "+ revClosed);
+    //System.out.println("Fwd closed: "+ fwdClosed);
+    //System.out.println("Rev closed: "+ revClosed);
   }
 
   public double getLeftDistance() {
