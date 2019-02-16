@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.commands.AutonomousDriveForward;
+import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.HatchBar;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -25,20 +27,24 @@ import frc.robot.subsystems.Drivetrain;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
-  // public static Pneumatics pneumatics = new Pneumatics();
+  public static HatchBar hatchBar = new HatchBar();
+  public static CargoArm cargoArm = new CargoArm();
+
   public static OI oi;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  //AxisCamera camera;
+  AxisCamera cameraFront;
+  AxisCamera cameraBack;
 
   final int IMG_WIDTH = 320;
   final int IMG_HEIGHT = 240;
+
+  //TODO: unfold command
   
   // Ultrasonics ultrasonics;
 
@@ -48,13 +54,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+      //TODO: arm power scalar on Shuffleboard
+
     oi = new OI();
     //m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
 
-
-    // camera = CameraServer.getInstance().addAxisCamera("Camera", RobotMap.cameraIPAddress);
+    cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
+    cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
+    
+    NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
     // CameraServer.getInstance().startAutomaticCapture(camera);
 
     // CameraServer.getInstance().getServer().setSource(source);
@@ -63,6 +73,8 @@ public class Robot extends TimedRobot {
     //System.out.println("Front camera initialized properly");
     
     // ultrasonics = new Ultrasonics();
+
+
 		 
   }
 
@@ -83,6 +95,10 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
 
     // oi.testAllButtons();
+
+    if(oi.getJoystickTrigger()) {
+      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
+    }
   }
 
   /**

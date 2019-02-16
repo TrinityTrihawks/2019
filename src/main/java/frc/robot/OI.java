@@ -17,6 +17,8 @@ public class OI {
 
   public Joystick controller = new Joystick(RobotMap.controller);
 
+  public Joystick XboxController = new Joystick(RobotMap.XboxController);
+
   public double getJoystickVerticalAxis() {
     return -1 * controller.getRawAxis(1);
   }

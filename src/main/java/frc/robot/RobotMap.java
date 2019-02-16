@@ -27,7 +27,23 @@ public class RobotMap {
   public static final int controller = 0 ; // id of controller with respect to computer
   public static final int verticalAxis = 2; // id of vertical axis within controller
 
-  public static final String cameraIPAddress = "10.42.15.39";
+  public static final int XboxController = 1;
+  
+  public static final int XboxLeftAxis = 1;
+  public static final int XboxRightAxis = 3;
+  public static final int XboxLeftBumper = 5;
+  public static final int XboxLeftTrigger = 7;
+  public static final int XboxRightBumper = 6;
+  public static final int XboxRightTrigger = 8;
+  public static final int XboxButtonX = 1;
+  public static final int XboxButtonA = 2;
+  public static final int XboxButtonB = 3;
+  public static final int XboxButtonY = 4;
+
+
+  
+  public static final String cameraFrontIPAddress = "10.42.15.39";
+  public static final String cameraBackIPAddress = "10.42.15.37";
 
   // port numbers of TalonSRXs on the RoboRio
   // TODO: use correct port numbers 2019 robot wheels
@@ -35,6 +51,16 @@ public class RobotMap {
   public static final int frontRightWheel = 0;
   public static final int backLeftWheel = 3;
   public static final int backRightWheel = 2;
+
+  // Hatch Bar
+  public static final int hatchBarTalonSRX = 0;
+  public static final int hatchBarVictorSPX = 1;
+  public static final int vacuumMotor1 = 0;
+  public static final int vacuumMotor2 = 1;
+
+  //Cargo arm
+  public static final int cargoIntake = 0;
+  public static final int cargoLift = 1;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
