@@ -40,27 +40,25 @@ public class RobotMap {
   public static final int XboxButtonB = 3;
   public static final int XboxButtonY = 4;
 
-
-  
-  public static final String cameraFrontIPAddress = "10.42.15.39";
+  //TODO: confirm these IP addresses on the 2019 competition robot
+  public static final String cameraFrontIPAddress = "10.42.15.36";
   public static final String cameraBackIPAddress = "10.42.15.37";
 
   // port numbers of TalonSRXs on the RoboRio
-  // TODO: use correct port numbers 2019 robot wheels
   public static final int frontLeftWheel = 1;
-  public static final int frontRightWheel = 0;
+  public static final int frontRightWheel = 9;
   public static final int backLeftWheel = 3;
   public static final int backRightWheel = 2;
 
   // Hatch Bar
-  public static final int hatchBarTalonSRX = 0;
-  public static final int hatchBarVictorSPX = 1;
+  public static final int hatchBarTalonSRX = 6;
+  public static final int hatchBarVictorSPX = 4;
   public static final int vacuumMotor1 = 0;
   public static final int vacuumMotor2 = 1;
 
   //Cargo arm
   public static final int cargoIntake = 0;
-  public static final int cargoLift = 1;
+  public static final int cargoLift = 10;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
@@ -81,5 +79,5 @@ public class RobotMap {
 
   //wheel circumference in inches
   public static final double wheelCircumference = 18.84955592153876;
-
+  
 }

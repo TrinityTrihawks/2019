@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.commands.AutonomousDriveForward;
+import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchBar;
@@ -44,6 +45,8 @@ public class Robot extends TimedRobot {
   final int IMG_WIDTH = 320;
   final int IMG_HEIGHT = 240;
 
+  String CameraDisplayed;
+
   //TODO: unfold command
   
   // Ultrasonics ultrasonics;
@@ -65,6 +68,7 @@ public class Robot extends TimedRobot {
     cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
     
     NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
+    CameraDisplayed = cameraFront.getName();
     // CameraServer.getInstance().startAutomaticCapture(camera);
 
     // CameraServer.getInstance().getServer().setSource(source);
@@ -95,9 +99,20 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
 
     // oi.testAllButtons();
-
     if(oi.getJoystickTrigger()) {
-      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
+      System.out.println("Joystick pressed");
+
+      CameraDisplayed = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").getString("");
+      System.out.println("Camera displayed ||" + CameraDisplayed + "||");
+      System.out.println("Front camera name ||" + cameraFront.getName() + "||");
+
+      if(CameraDisplayed.equals(cameraFront.getName())) {
+        System.out.println("Front camera currently displayed");
+        NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
+      } else {
+        System.out.println("Back camera currently displayed");
+        NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
+      }
     }
   }
 
@@ -128,8 +143,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    AutonomousDriveForward driveForwardCommand = new AutonomousDriveForward(12);
-    driveForwardCommand.start();
+    TeleopDrive teleopDrive = new TeleopDrive();
+    teleopDrive.start();
+
     // m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -171,6 +187,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
   }
 
   /**

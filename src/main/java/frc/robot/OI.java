@@ -38,7 +38,7 @@ public class OI {
   
   public boolean getJoystickTrigger() {
     // System.out.println("Pressed trigger");
-    return controller.getTrigger();
+    return controller.getTriggerPressed();
   }
 
   public boolean getJoystickTopLeftButton() {

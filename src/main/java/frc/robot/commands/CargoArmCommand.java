@@ -31,20 +31,26 @@ public class CargoArmCommand extends Command {
   @Override
   protected void execute() {
     double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxRightAxis);
-    power = power * 0.5;
+    power = power * 0.2;
     Robot.cargoArm.Lift(power);
+    // System.out.println("Cargo arm: "+ power);
 
     //TODO: override limit switch to intake/spit ball
 
-    if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonA)) {
-        Robot.cargoArm.off();
-    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonX)) {
+    // Robot.cargoArm.off();
+    extracted();
+
+  }
+
+private void extracted() {
+	if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonX)) {
         Robot.cargoArm.intake();
     } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonB)) {
         Robot.cargoArm.spit();
+    } else {
+      Robot.cargoArm.off();
     }
-
-  }
+}
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

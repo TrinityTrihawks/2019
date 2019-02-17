@@ -46,11 +46,13 @@ public class Drivetrain extends Subsystem {
     masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
     // set the back wheels to mirror the front wheels
-    slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
-    slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
+    // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
+    // slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
     masterRight.setInverted(true);
     slaveRight.setInverted(true);
+    // slaveRight.setInverted(true);
+    // slaveLeft.setInverted(true);
 
     // create the gyro
     gyro = new PigeonIMU(RobotMap.gyro);
@@ -87,13 +89,19 @@ public class Drivetrain extends Subsystem {
   public void Drive(double leftPower, double rightPower){
     // Set power to left and right sides of the robot
     masterLeft.set(ControlMode.PercentOutput, leftPower);
+    slaveLeft.set(ControlMode.PercentOutput, leftPower);
+
     masterRight.set(ControlMode.PercentOutput, rightPower);
+    slaveRight.set(ControlMode.PercentOutput, rightPower);
 
-    boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
-    boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
+    // System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
 
-    System.out.println("Fwd closed: "+ fwdClosed);
-    System.out.println("Rev closed: "+ revClosed);
+    // boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
+    // boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
+    // System.out.println("Fwd closed: "+ fwdClosed);
+    // System.out.println("Rev closed: "+ revClosed);
+
+
   }
 
   public double getLeftDistance() {

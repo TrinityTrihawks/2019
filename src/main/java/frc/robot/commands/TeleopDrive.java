@@ -38,16 +38,16 @@ public class TeleopDrive extends Command {
     if(slider < 0.1) {
       slider = 0.1;
     }
-    boolean trigger = Robot.oi.getJoystickTrigger();
+    // boolean trigger = Robot.oi.getJoystickTrigger();
 
-    if (trigger)
-    {
-      Robot.drivetrain.DisableLimitSwitch();
-    }
-    else
-    {
-      Robot.drivetrain.EnableLimitSwitch();
-    }
+    // if (trigger)
+    // {
+    //   Robot.drivetrain.DisableLimitSwitch();
+    // }
+    // else
+    // {
+    //   Robot.drivetrain.EnableLimitSwitch();
+    // }
 
     if(Math.abs(magnitude) < 0.4) {
       magnitude = 0;

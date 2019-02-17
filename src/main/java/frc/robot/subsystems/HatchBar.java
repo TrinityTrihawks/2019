@@ -43,6 +43,7 @@ public class HatchBar extends Subsystem {
       slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
 
       slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
+      slaveBarLift.setInverted(true);
   }
 
   public void Lift(double liftPower) {
@@ -70,16 +71,19 @@ public class HatchBar extends Subsystem {
   //SUCTION
 
   public void suctionIn() {
+    System.out.println("Suction in");
     vacuumMotor1.set(1);
     vacuumMotor2.set(1);
   }
 
   public void suctionOff() {
+    System.out.println("Suction off");
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
   }
 
   public void suctionOut() {
+    System.out.println("Suction out");  
     vacuumMotor1.set(-1);
     vacuumMotor2.set(-1);
   }
