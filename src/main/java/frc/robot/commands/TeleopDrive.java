@@ -18,6 +18,7 @@ public class TeleopDrive extends Command {
   public TeleopDrive() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
+    // requires(Robot.pneumatics);
   }
 
   // Called just before this Command runs the first time
@@ -33,7 +34,7 @@ public class TeleopDrive extends Command {
     double twist = Robot.oi.getJoystickTwist();
     double slider = Robot.oi.getSlider();
     boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
-    // System.out.println("Drive straight: "+shouldDriveStraight);
+    //System.out.println("Drive straight: "+shouldDriveStraight);
 
     if(slider < 0.1) {
       slider = 0.1;
@@ -87,8 +88,19 @@ public class TeleopDrive extends Command {
 
     Robot.drivetrain.Drive(leftPower, rightPower);
 
-    // double leftEncoder = Robot.drivetrain.getLeftDistance();
-    // double rightEncoder = Robot.drivetrain.getRightDistance();
+    // if(Robot.oi.getJoystickTrigger()) {
+    //   Robot.pneumatics.off();
+    //   System.out.println("Commanding pneumatics off");
+    // } else if (Robot.oi.getJoystickTopLeftButton()) {
+    //   Robot.pneumatics.goForward();
+    //   System.out.println("Commanding pneumatics forward");
+    // } else if(Robot.oi.getJoystickTopRightButton()) {  
+    //   Robot.pneumatics.goBackwards();
+    //   System.out.println("Commanding pneumatics backwards");
+    // } 
+
+    double leftEncoder = Robot.drivetrain.getLeftDistance();
+    double rightEncoder = Robot.drivetrain.getRightDistance();
     // System.out.println("Left Encoder: "+ leftEncoder);
     // System.out.println("Right encoder: "+ rightEncoder);
 
