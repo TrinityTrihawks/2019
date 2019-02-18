@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.commands.AutonomousDriveForward;
+import frc.robot.commands.HatchBarSteadyPower;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
@@ -38,6 +39,8 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  Command hatchBarSteadyPower;
 
   AxisCamera cameraFront;
   AxisCamera cameraBack;
@@ -63,6 +66,7 @@ public class Robot extends TimedRobot {
     //m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putNumber("Hatch arm steady power", 0);
 
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
     cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
@@ -146,6 +150,11 @@ public class Robot extends TimedRobot {
     TeleopDrive teleopDrive = new TeleopDrive();
     teleopDrive.start();
 
+    double hatchSteadyPower = SmartDashboard.getNumber("Hatch arm steady power", 0);
+    hatchBarSteadyPower = new HatchBarSteadyPower(hatchSteadyPower);
+    hatchBarSteadyPower.start();
+
+
     // m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -175,8 +184,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (hatchBarSteadyPower != null) {
+      hatchBarSteadyPower.cancel();
     }
     Scheduler.getInstance().run();
   }
