@@ -1,56 +1,56 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+// /*----------------------------------------------------------------------------*/
+// /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+// /* Open Source Software - may be modified and shared by FRC teams. The code   */
+// /* must be accompanied by the FIRST BSD license file in the root directory of */
+// /* the project.                                                               */
+// /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+// package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+// import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import frc.robot.commands.CargoArmCommand;
+// import edu.wpi.first.wpilibj.command.Subsystem;
+// import frc.robot.RobotMap;
+// import frc.robot.commands.CargoArmCommand;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
-public class CargoArm extends Subsystem {
-  // Put methods  controlling this subsystem
-  // here. Call these from Commands.
+// /**
+//  * An example subsystem.  You can replace me with your own Subsystem.
+//  */
+// public class CargoArm extends Subsystem {
+//   // Put methods  controlling this subsystem
+//   // here. Call these from Commands.
 
-  TalonSRX cargoLift;
-  TalonSRX cargoIntake;
+//   TalonSRX cargoLift;
+//   TalonSRX cargoIntake;
 
-  public CargoArm(){
-    cargoLift = new TalonSRX(RobotMap.cargoLift);
-    cargoIntake = new TalonSRX(RobotMap.cargoIntake);
+//   public CargoArm(){
+//     cargoLift = new TalonSRX(RobotMap.cargoLift);
+//     cargoIntake = new TalonSRX(RobotMap.cargoIntake);
 
-  }
+//   }
 
-  public void Lift(double liftPower) {
-      cargoLift.set(ControlMode.PercentOutput, liftPower);
-  };
-
-
-  public void intake() {
-    //   System.out.println("Intake intake");
-      cargoIntake.set(ControlMode.PercentOutput, 1);
-  }
-  public void spit() {
-    //   System.out.println("Intake spit");
-      cargoIntake.set(ControlMode.PercentOutput, -1);
-  }
-  public void off() {
-    //   System.out.println("Intake off");
-      cargoIntake.set(ControlMode.PercentOutput, 0);
-  }
+//   public void Lift(double liftPower) {
+//       cargoLift.set(ControlMode.PercentOutput, liftPower);
+//   };
 
 
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new CargoArmCommand());
-  }
-}
+//   public void intake() {
+//     //   System.out.println("Intake intake");
+//       cargoIntake.set(ControlMode.PercentOutput, 1);
+//   }
+//   public void spit() {
+//     //   System.out.println("Intake spit");
+//       cargoIntake.set(ControlMode.PercentOutput, -1);
+//   }
+//   public void off() {
+//     //   System.out.println("Intake off");
+//       cargoIntake.set(ControlMode.PercentOutput, 0);
+//   }
+
+
+//   @Override
+//   public void initDefaultCommand() {
+//     setDefaultCommand(new CargoArmCommand());
+//   }
+// }

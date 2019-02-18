@@ -1,72 +1,72 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+// /*----------------------------------------------------------------------------*/
+// /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+// /* Open Source Software - may be modified and shared by FRC teams. The code   */
+// /* must be accompanied by the FIRST BSD license file in the root directory of */
+// /* the project.                                                               */
+// /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+// package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
+// import edu.wpi.first.wpilibj.command.Command;
+// import frc.robot.Robot;
+// import frc.robot.RobotMap;
 
-/**
- * An example command.  You can replace me with your own command.
- */
-public class CargoArmCommand extends Command {
+// /**
+//  * An example command.  You can replace me with your own command.
+//  */
+// public class CargoArmCommand extends Command {
 
-  public CargoArmCommand() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.cargoArm);
+//   public CargoArmCommand() {
+//     // Use requires() here to declare subsystem dependencies
+//     requires(Robot.cargoArm);
 
-  }
+//   }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
+//   // Called just before this Command runs the first time
+//   @Override
+//   protected void initialize() {
+//   }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxRightAxis);
-    power = power * 0.2;
-    Robot.cargoArm.Lift(power);
-    // System.out.println("Cargo arm: "+ power);
+//   // Called repeatedly when this Command is scheduled to run
+//   @Override
+//   protected void execute() {
+//     double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxRightAxis);
+//     power = power * 0.2;
+//     Robot.cargoArm.Lift(power);
+//     // System.out.println("Cargo arm: "+ power);
 
-    //TODO: override limit switch to intake/spit ball
+//     //TODO: override limit switch to intake/spit ball
 
-    // Robot.cargoArm.off();
-    extracted();
+//     // Robot.cargoArm.off();
+//     extracted();
 
-  }
+//   }
 
-private void extracted() {
-	if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonX)) {
-        Robot.cargoArm.intake();
-    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonB)) {
-        Robot.cargoArm.spit();
-    } else {
-      Robot.cargoArm.off();
-    }
-}
+// private void extracted() {
+// 	if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonX)) {
+//         Robot.cargoArm.intake();
+//     } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonB)) {
+//         Robot.cargoArm.spit();
+//     } else {
+//       Robot.cargoArm.off();
+//     }
+// }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-      return false;
-  }
+//   // Make this return true when this Command no longer needs to run execute()
+//   @Override
+//   protected boolean isFinished() {
+//       return false;
+//   }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+//   // Called once after isFinished returns true
+//   @Override
+//   protected void end() {
+//   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-      end();
-  }
-}
+//   // Called when another command which requires one or more of the same
+//   // subsystems is scheduled to run
+//   @Override
+//   protected void interrupted() {
+//       end();
+//   }
+// }
