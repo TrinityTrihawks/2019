@@ -31,8 +31,8 @@ import frc.robot.subsystems.HatchBar;
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
-  public static HatchBar hatchBar = new HatchBar();
-  public static CargoArm cargoArm = new CargoArm();
+  // public static HatchBar hatchBar = new HatchBar();
+  // public static CargoArm cargoArm = new CargoArm();
 
   public static OI oi;
 

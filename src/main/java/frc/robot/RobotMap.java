@@ -46,9 +46,9 @@ public class RobotMap {
 
   // port numbers of TalonSRXs on the RoboRio
   public static final int frontLeftWheel = 1;
-  public static final int frontRightWheel = 9;
+  public static final int frontRightWheel = 0;
   public static final int backLeftWheel = 3;
-  public static final int backRightWheel = 2;
+  public static final int backRightWheel = 2; 
 
   // Hatch Bar
   public static final int hatchBarTalonSRX = 6;
