@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -27,23 +28,27 @@ public class HatchBar extends Subsystem {
   TalonSRX masterBarLift;
   VictorSPX slaveBarLift;
 
-  DoubleSolenoid piston;
+  // DoubleSolenoid piston;
 
   VictorSP vacuumMotor1;
   VictorSP vacuumMotor2;
 
+  Compressor compressor;
+
   public HatchBar(){
-    piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
+    // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
 
     vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
     vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
+
+    compressor = new Compressor();
     
 
-      masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
-      slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
+    masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
+    slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
 
-      slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
-      slaveBarLift.setInverted(true);
+    slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
+    slaveBarLift.setInverted(true);
   }
 
   public void Lift(double liftPower) {
@@ -52,20 +57,20 @@ public class HatchBar extends Subsystem {
 
   //PNEUMATICS
 
-  public void pneumaticsExtend() {
-    piston.set(DoubleSolenoid.Value.kForward);
-    System.out.println("Pneumatics forward");
-  }
+  // public void pneumaticsExtend() {
+  //   piston.set(DoubleSolenoid.Value.kForward);
+  //   System.out.println("Pneumatics forward");
+  // }
 
-  public void pneumaticsRetract() {
-    piston.set(DoubleSolenoid.Value.kReverse);
-    System.out.println("Pneumatics reverse");
-  }
+  // public void pneumaticsRetract() {
+  //   piston.set(DoubleSolenoid.Value.kReverse);
+  //   System.out.println("Pneumatics reverse");
+  // }
 
-  public void pneumaticsOff() {
-    piston.set(DoubleSolenoid.Value.kOff);
-    System.out.println("Pneumatics off");
-  }
+  // public void pneumaticsOff() {
+  //   piston.set(DoubleSolenoid.Value.kOff);
+  //   System.out.println("Pneumatics off");
+  // }
 
 
   //SUCTION
@@ -74,18 +79,21 @@ public class HatchBar extends Subsystem {
     System.out.println("Suction in");
     vacuumMotor1.set(1);
     vacuumMotor2.set(1);
+    compressor.stop();
   }
 
   public void suctionOff() {
     System.out.println("Suction off");
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
+    compressor.stop();
   }
 
   public void suctionOut() {
     System.out.println("Suction out");  
-    vacuumMotor1.set(-1);
-    vacuumMotor2.set(-1);
+    vacuumMotor1.set(0);
+    vacuumMotor2.set(0);
+    compressor.start();
   }
 
 

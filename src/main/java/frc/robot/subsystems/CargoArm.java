@@ -37,11 +37,11 @@ public class CargoArm extends Subsystem {
 
   public void intake() {
     //   System.out.println("Intake intake");
-      cargoIntake.set(ControlMode.PercentOutput, 1);
+      cargoIntake.set(ControlMode.PercentOutput, -1);
   }
   public void spit() {
     //   System.out.println("Intake spit");
-      cargoIntake.set(ControlMode.PercentOutput, -1);
+      cargoIntake.set(ControlMode.PercentOutput, 1);
   }
   public void off() {
     //   System.out.println("Intake off");

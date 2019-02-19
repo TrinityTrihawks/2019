@@ -36,12 +36,12 @@ public class HatchBarCommand extends Command {
     Robot.hatchBar.Lift(power);
     // System.out.println("Hatch lift: " + power);
 
-    //TODO: put safeguards in pneumatics extend and retract code
-    if(Robot.oi.XboxController.getRawButton(10)) {
-        Robot.hatchBar.pneumaticsExtend();
-    } else if(Robot.oi.XboxController.getRawButton(9)) {
-        Robot.hatchBar.pneumaticsRetract();
-    }
+    // //TODO: put safeguards in pneumatics extend and retract code
+    // if(Robot.oi.XboxController.getRawButton(10)) {
+    //     Robot.hatchBar.pneumaticsExtend();
+    // } else if(Robot.oi.XboxController.getRawButton(9)) {
+    //     Robot.hatchBar.pneumaticsRetract();
+    // }
 
     // if(Robot.oi.XboxController.getRawButton(RobotMap.XboxLeftBumper)) {
     //     Robot.hatchBar.pneumaticsExtend();
