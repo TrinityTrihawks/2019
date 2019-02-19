@@ -38,16 +38,15 @@ public class Drivetrain extends Subsystem {
     slaveLeft = new TalonSRX(RobotMap.backLeftWheel);
     slaveRight = new TalonSRX(RobotMap.backRightWheel);
 
-    // masterRight.configSelectedFeedbackSensor(FeedbackDevice.Tachometer);
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    // masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    // masterRight.configForwardLimitSwitchSource(Li  mitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    // masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    // masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
     // set the back wheels to mirror the front wheels
-    // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
-    // slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
+    slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
+    slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
     masterRight.setInverted(true);
     slaveRight.setInverted(true);
@@ -68,31 +67,38 @@ public class Drivetrain extends Subsystem {
 
   }
 
-  public void EnableLimitSwitch()
-  {
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+  // public void EnableLimitSwitch()
+  // {
+  //   masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+  //   masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-  }
+  //   masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+  //   masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+  // }
   
-  public void DisableLimitSwitch()
-  {
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+  // public void DisableLimitSwitch()
+  // {
+  //   masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+  //   masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-  }
+  //   masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+  //   masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+  // }
 
   public void Drive(double leftPower, double rightPower){
     // Set power to left and right sides of the robot
     masterLeft.set(ControlMode.PercentOutput, leftPower);
-    slaveLeft.set(ControlMode.PercentOutput, leftPower);
+    // slaveLeft.set(ControlMode.PercentOutput, leftPower);
 
     masterRight.set(ControlMode.PercentOutput, rightPower);
-    slaveRight.set(ControlMode.PercentOutput, rightPower);
+    // slaveRight.set(ControlMode.PercentOutput, rightPower);
+
+    boolean isLimitSwitchActive = masterRight.getSensorCollection().isRevLimitSwitchClosed();
+
+    if(isLimitSwitchActive) {
+      masterRight.set(ControlMode.PercentOutput, 0.2 * rightPower);
+    }
+    System.out.println("Limitdf switch closed: " + isLimitSwitchActive);
 
     // System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
 
