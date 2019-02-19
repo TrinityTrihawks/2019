@@ -34,6 +34,7 @@ public class TeleopDrive extends Command {
     double twist = Robot.oi.getJoystickTwist();
     double slider = Robot.oi.getSlider();
     boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
+    boolean driveInReverse = Robot.oi.controller.getRawButton(11); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
 
     if(slider < 0.1) {
@@ -70,8 +71,14 @@ public class TeleopDrive extends Command {
     //magnitude *= .5;
     twist *= .5;
 
+
+    if(driveInReverse) {
+      magnitude = -1 * magnitude;
+    }
+
     double leftPower = magnitude * slider + twist;
     double rightPower = magnitude * slider - twist;
+
 
     //scale power to valid range and keep the ratio between the left and right powers equal
     // if(Math.abs(leftPower) > 1) {

@@ -39,11 +39,11 @@ public class Drivetrain extends Subsystem {
     slaveRight = new TalonSRX(RobotMap.backRightWheel);
 
     // masterRight.configSelectedFeedbackSensor(FeedbackDevice.Tachometer);
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
 
     // set the back wheels to mirror the front wheels
     // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
@@ -51,7 +51,7 @@ public class Drivetrain extends Subsystem {
 
     masterRight.setInverted(true);
     slaveRight.setInverted(true);
-    // slaveRight.setInverted(true);
+    // masterLeft.setInverted(true);
     // slaveLeft.setInverted(true);
 
     // create the gyro
