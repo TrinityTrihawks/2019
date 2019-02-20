@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -35,6 +36,9 @@ public class HatchBar extends Subsystem {
 
   Compressor compressor;
 
+  Encoder liftEncoder;  
+  final double armStartingAngle = 30; // in degrees
+
   public HatchBar(){
     // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
 
@@ -42,13 +46,14 @@ public class HatchBar extends Subsystem {
     vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
 
     compressor = new Compressor();
-    
-
+  
     masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
     slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
 
     slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
     slaveBarLift.setInverted(true);
+
+    // liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
   }
 
   public void Lift(double liftPower) {
@@ -94,6 +99,12 @@ public class HatchBar extends Subsystem {
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
     compressor.start();
+  }
+
+  public double getArmAngle() {
+    return 0;
+    // System.out.println("Raw hatch angle:"+ liftEncoder.get());
+    // return (liftEncoder.get() + armStartingAngle) * 1/2;
   }
 
 

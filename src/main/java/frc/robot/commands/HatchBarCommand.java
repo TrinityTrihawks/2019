@@ -32,9 +32,24 @@ public class HatchBarCommand extends Command {
   @Override
   protected void execute() {
     double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis);
-    power = power * 1;
+
+    System.out.println("angle: " + Robot.hatchBar.getArmAngle());
+
+    // double baseLinePower = 0;
+    // if(Robot.hatchBar.getArmAngle() < 90) {
+    //     baseLinePower = 0.2;
+    // }
+
     Robot.hatchBar.Lift(power);
     // System.out.println("Hatch lift: " + power);
+
+    if(Robot.oi.XboxController.getRawButton(RobotMap.XboxLeftTrigger)) {
+        Robot.hatchBar.suctionOff();
+    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxLeftBumper)) {
+        Robot.hatchBar.suctionIn();
+    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
+        Robot.hatchBar.suctionOut();
+    }
 
     // //TODO: put safeguards in pneumatics extend and retract code
     // if(Robot.oi.XboxController.getRawButton(10)) {
@@ -48,15 +63,6 @@ public class HatchBarCommand extends Command {
     // } else {
     //     Robot.hatchBar.pneumaticsRetract();
     // }
-
-    if(Robot.oi.XboxController.getRawButton(RobotMap.XboxLeftTrigger)) {
-        Robot.hatchBar.suctionOff();
-    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxLeftBumper)) {
-        Robot.hatchBar.suctionIn();
-    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
-        Robot.hatchBar.suctionOut();
-    }
-
 
 
   }

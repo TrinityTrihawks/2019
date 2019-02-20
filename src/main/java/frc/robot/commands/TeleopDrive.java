@@ -71,7 +71,7 @@ public class TeleopDrive extends Command {
     //magnitude *= .5;
     twist *= .5;
 
-
+    
     if(driveInReverse) {
       magnitude = -1 * magnitude;
     }
