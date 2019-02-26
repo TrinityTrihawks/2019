@@ -82,7 +82,7 @@ public class HatchBar extends Subsystem {
         }  
       }
 
-      masterBarLift.set(ControlMode.PercentOutput, liftPowersgg);
+      masterBarLift.set(ControlMode.PercentOutput, liftPower);
 
 
       // System.out.println("Compressor enabled: " + compressor.enabled());
