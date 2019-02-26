@@ -55,8 +55,8 @@ public class RobotMap {
   public static final int hatchBarVictorSPX = 4;
   public static final int vacuumMotor1 = 0;
   public static final int vacuumMotor2 = 1;
-  public static final int hatchBarEncoderSourceA = 0;
-  public static final int hatchBarEncoderSourceB = 1;
+  public static final int hatchBarEncoderSourceA = 1;
+  public static final int hatchBarEncoderSourceB = 0;
 
   //Cargo arm
   public static final int cargoIntake = 0;

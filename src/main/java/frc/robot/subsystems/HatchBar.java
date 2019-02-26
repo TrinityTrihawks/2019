@@ -37,7 +37,9 @@ public class HatchBar extends Subsystem {
   Compressor compressor;
 
   Encoder liftEncoder;  
-  final double armStartingAngle = 30; // in degrees
+
+  // private double outwardsScalar = 100 / 120;
+  // private double inwardsScalar = 100 / 30;
 
   public HatchBar(){
     // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
@@ -45,7 +47,8 @@ public class HatchBar extends Subsystem {
     vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
     vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
 
-    compressor = new Compressor();
+    compressor = new Compressor(7);
+    compressor.start();
   
     masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
     slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
@@ -53,12 +56,41 @@ public class HatchBar extends Subsystem {
     slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
     slaveBarLift.setInverted(true);
 
-    // liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
+    liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
   }
 
   public void Lift(double liftPower) {
-      masterBarLift.set(ControlMode.PercentOutput, liftPower);
+      System.out.println("Raw hatch angle:"+ liftEncoder.get());
+
+      double angle = liftEncoder.get();
+      // double scaledPower;
+      // if(liftPower > 0) {
+      //   //moving arm away from robot
+      //   scaledPower = liftPower * angle / 150;
+      // } else {
+      //   //moving arm towards robot
+      //   scaledPower = liftPower * (angle == 0 ? .25 : angle) / 60;
+      // }
+
+      double newPower = liftPower;
+
+      if (liftPower < 0)
+      {
+        liftPower *= .5;
+        if(angle > 45) {
+          liftPower = 0;
+        }  
+      }
+
+      masterBarLift.set(ControlMode.PercentOutput, liftPowersgg);
+
+
+      // System.out.println("Compressor enabled: " + compressor.enabled());
   } 
+
+  public void resetEncoder() {
+    liftEncoder.reset();
+  }
 
   //PNEUMATICS
 
@@ -101,11 +133,10 @@ public class HatchBar extends Subsystem {
     compressor.start();
   }
 
-  public double getArmAngle() {
-    return 0;
-    // System.out.println("Raw hatch angle:"+ liftEncoder.get());
-    // return (liftEncoder.get() + armStartingAngle) * 1/2;
-  }
+  // public double getArmAngle() {
+  //   // System.out.println("Raw hatch angle:"+ liftEncoder.get());
+  //   return (liftEncoder.get() + armStartingAngle) / 1.7;
+  // }
 
 
   @Override

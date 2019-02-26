@@ -33,7 +33,7 @@ public class HatchBarCommand extends Command {
   protected void execute() {
     double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis);
 
-    System.out.println("angle: " + Robot.hatchBar.getArmAngle());
+    // System.out.println("angle: " + Robot.hatchBar.getArmAngle());
 
     // double baseLinePower = 0;
     // if(Robot.hatchBar.getArmAngle() < 90) {
