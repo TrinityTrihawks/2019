@@ -9,14 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
-import frc.robot.commands.AutonomousDriveForward;
 import frc.robot.commands.HatchBarSteadyPower;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.CargoArm;
@@ -37,9 +35,6 @@ public class Robot extends TimedRobot {
 
   public static OI oi;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-
   Command hatchBarSteadyPower;
 
   AxisCamera cameraFront;
@@ -52,7 +47,6 @@ public class Robot extends TimedRobot {
 
   //TODO: unfold command
   
-  // Ultrasonics ultrasonics;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -63,9 +57,6 @@ public class Robot extends TimedRobot {
       //TODO: arm power scalar on Shuffleboard
 
     oi = new OI();
-    //m_chooser.addDefault("Default Auto", new ExampleCommand());
-    // chooser.addObject("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
     SmartDashboard.putNumber("Hatch arm steady power", 0);
 
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
@@ -80,8 +71,6 @@ public class Robot extends TimedRobot {
 		// camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     //System.out.println("Front camera initialized properly");
     
-    // ultrasonics = new Ultrasonics();
-
 
 		 
   }
@@ -99,8 +88,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
-    // SmartDashboard.putNumber("Left ultrasonic", ultrasonics.getLeftDistance());
-    // SmartDashboard.putNumber("Right ultrasonic", ultrasonics.getRightDistance());
 
     // oi.testAllButtons();
     if(oi.getJoystickTrigger()) {
@@ -150,24 +137,6 @@ public class Robot extends TimedRobot {
     TeleopDrive teleopDrive = new TeleopDrive();
     teleopDrive.start();
 
-    double hatchSteadyPower = SmartDashboard.getNumber("Hatch arm steady power", 0);
-    hatchBarSteadyPower = new HatchBarSteadyPower(hatchSteadyPower);
-    hatchBarSteadyPower.start();
-
-
-    // m_autonomousCommand = m_chooser.getSelected();
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.start();
-    // }
   }
 
   /**
@@ -181,13 +150,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     hatchBar.resetEncoder();
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (hatchBarSteadyPower != null) {
-      hatchBarSteadyPower.cancel();
-    }
+
     Scheduler.getInstance().run();
   }
 

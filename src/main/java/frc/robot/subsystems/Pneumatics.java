@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.RobotMap;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * Operates a pneumatic cylinder using a double solenoid. Not used in robot code
  */
 public class Pneumatics extends Subsystem {
   // Put methods for controlling this subsystem

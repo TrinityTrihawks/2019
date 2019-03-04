@@ -26,6 +26,7 @@ public class RobotMap {
 
   public static final int controller = 0 ; // id of controller with respect to computer
   public static final int verticalAxis = 2; // id of vertical axis within controller
+  public static final int driveInReverseButton = 11;
 
   public static final int XboxController = 1;
   
@@ -57,6 +58,7 @@ public class RobotMap {
   public static final int vacuumMotor2 = 1;
   public static final int hatchBarEncoderSourceA = 1;
   public static final int hatchBarEncoderSourceB = 0;
+  public static final int compressor = 7;
 
   //Cargo arm
   public static final int cargoIntake = 0;

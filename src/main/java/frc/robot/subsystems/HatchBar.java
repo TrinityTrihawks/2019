@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,14 +28,12 @@ public class HatchBar extends Subsystem {
   TalonSRX masterBarLift;
   VictorSPX slaveBarLift;
 
-  // DoubleSolenoid piston;
-
   VictorSP vacuumMotor1;
   VictorSP vacuumMotor2;
 
   Compressor compressor;
 
-  Encoder liftEncoder;  
+  Encoder liftEncoder;
 
   // private double outwardsScalar = 100 / 120;
   // private double inwardsScalar = 100 / 30;
@@ -47,7 +44,7 @@ public class HatchBar extends Subsystem {
     vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
     vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
 
-    compressor = new Compressor(7);
+    compressor = new Compressor(RobotMap.compressor);
     compressor.start();
   
     masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);

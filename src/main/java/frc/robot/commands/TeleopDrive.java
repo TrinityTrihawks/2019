@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -34,22 +35,12 @@ public class TeleopDrive extends Command {
     double twist = Robot.oi.getJoystickTwist();
     double slider = Robot.oi.getSlider();
     boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
-    boolean driveInReverse = Robot.oi.controller.getRawButton(11); 
+    boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
 
     if(slider < 0.1) {
       slider = 0.1;
     }
-    // boolean trigger = Robot.oi.getJoystickTrigger();
-
-    // if (trigger)
-    // {
-    //   Robot.drivetrain.DisableLimitSwitch();
-    // }
-    // else
-    // {
-    //   Robot.drivetrain.EnableLimitSwitch();
-    // }
 
     if(Math.abs(magnitude) < 0.4) {
       magnitude = 0;
@@ -58,7 +49,6 @@ public class TeleopDrive extends Command {
     if(shouldDriveStraight == true) {
       twist = 0;
     }
-
 
     if(Math.abs(magnitude) < 0.4) {
       magnitude = 0;
@@ -79,37 +69,25 @@ public class TeleopDrive extends Command {
     double leftPower = magnitude * slider + twist;
     double rightPower = magnitude * slider - twist;
 
-
-    //scale power to valid range and keep the ratio between the left and right powers equal
-    // if(Math.abs(leftPower) > 1) {
-    //   leftPower = leftPower / Math.abs(leftPower);
-    //   rightPower = rightPower / Math.abs(leftPower);
-    // } else if(Math.abs(rightPower) > 1) {
-    //   rightPower = rightPower / Math.abs(rightPower);
-    //   leftPower = leftPower / Math.abs(rightPower);
-    // }
-    // System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
-
-    // Set power of the wheels
-    // System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
+    System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
     Robot.drivetrain.Drive(leftPower, rightPower);
-
-    // if(Robot.oi.getJoystickTrigger()) {
-    //   Robot.pneumatics.off();
-    //   System.out.println("Commanding pneumatics off");
-    // } else if (Robot.oi.getJoystickTopLeftButton()) {
-    //   Robot.pneumatics.goForward();
-    //   System.out.println("Commanding pneumatics forward");
-    // } else if(Robot.oi.getJoystickTopRightButton()) {  
-    //   Robot.pneumatics.goBackwards();
-    //   System.out.println("Commanding pneumatics backwards");
-    // } 
 
     double leftEncoder = Robot.drivetrain.getLeftDistance();
     double rightEncoder = Robot.drivetrain.getRightDistance();
     // System.out.println("Left Encoder: "+ leftEncoder);
     // System.out.println("Right encoder: "+ rightEncoder);
+
+
+    // boolean trigger = Robot.oi.getJoystickTrigger();
+    // if (trigger)
+    // {
+    //   Robot.drivetrain.DisableLimitSwitch();
+    // }
+    // else
+    // {
+    //   Robot.drivetrain.EnableLimitSwitch();
+    // }
 
   }
 
@@ -129,5 +107,22 @@ public class TeleopDrive extends Command {
   @Override
   protected void interrupted() {
       end();
+  }
+
+  private double[] scalePowerToValidInterval(double leftPower, double rightPower) {
+      double[] newPower = {0, 0}; //left power and right power (in that order)
+      // scale power to valid range and keep the ratio between the left and right powers equal
+      if(Math.abs(leftPower) > 1) {
+        newPower[0] = leftPower / Math.abs(leftPower);
+        newPower[1] = rightPower / Math.abs(leftPower);
+      } else if(Math.abs(rightPower) > 1) {
+        newPower[0] = rightPower / Math.abs(rightPower);
+        newPower[1] = leftPower / Math.abs(rightPower);
+      } else {
+        newPower[0] = leftPower;
+        newPower[1] = rightPower;
+      }
+      
+      return newPower;
   }
 }

@@ -13,7 +13,6 @@ import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 
 
 /**
@@ -27,7 +26,6 @@ public class Drivetrain extends Subsystem {
   TalonSRX slaveLeft;
   TalonSRX slaveRight;
 
-  // PigeonIMU gyro;
   // Encoder encoderLeft;
   // Encoder encoderRight;
 
@@ -38,13 +36,13 @@ public class Drivetrain extends Subsystem {
     slaveLeft = new TalonSRX(RobotMap.backLeftWheel);
     slaveRight = new TalonSRX(RobotMap.backRightWheel);
 
-    // masterRight.configSelectedFeedbackSensor(FeedbackDevice.Tachometer);
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+    //reset all Talon config settings to avoid accidental settings carry-over
+    masterLeft.configFactoryDefault();
+    masterRight.configFactoryDefault();
+    slaveLeft.configFactoryDefault();
+    slaveRight.configFactoryDefault();
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-
+    DisableLimitSwitch();
     // set the back wheels to mirror the front wheels
     // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
     // slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
@@ -54,18 +52,9 @@ public class Drivetrain extends Subsystem {
     // masterLeft.setInverted(true);
     // slaveLeft.setInverted(true);
 
-    // create the gyro
-    // gyro = new PigeonIMU(RobotMap.gyro);
-
     //create the encoders
     // encoderLeft = new Encoder(RobotMap.leftEncoderSourceA, RobotMap.leftEncoderSourceB);
     // encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
-
-    // masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-    // masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-
-    // slaveRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-
   }
 
   public void EnableLimitSwitch()
