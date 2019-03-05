@@ -35,6 +35,13 @@ public class Robot extends TimedRobot {
 
   public static OI oi;
 
+  public enum DrivePerspectives {
+    HATCH, CARGO;
+  }
+
+  public static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
+  private DrivePerspectives prevPerspective = drivePerspective;
+
   Command hatchBarSteadyPower;
 
   AxisCamera cameraFront;
@@ -89,22 +96,20 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
 
-    // oi.testAllButtons();
-    if(oi.getJoystickTrigger()) {
-      System.out.println("Joystick pressed");
-
-      CameraDisplayed = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").getString("");
-      System.out.println("Camera displayed ||" + CameraDisplayed + "||");
-      System.out.println("Front camera name ||" + cameraFront.getName() + "||");
-
-      if(CameraDisplayed.equals(cameraFront.getName())) {
-        System.out.println("Front camera currently displayed");
+    if(drivePerspective != prevPerspective) {
+      // System.out.println("Camera displayed ||" + CameraDisplayed + "||");
+      // System.out.println("Front camera name ||" + cameraFront.getName() + "||");
+      if(drivePerspective == DrivePerspectives.CARGO) {
         NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
-      } else {
         System.out.println("Back camera currently displayed");
+      } else {
         NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
+        System.out.println("Front camera currently displayed");
       }
+
+      prevPerspective = drivePerspective;
     }
+
   }
 
   /**
@@ -168,5 +173,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+        oi.testAllButtons();
+  }
+
+  public static void switchPerspective() {
+    if (drivePerspective == DrivePerspectives.HATCH) {
+      drivePerspective = DrivePerspectives.CARGO;
+    } else {
+      drivePerspective = DrivePerspectives.HATCH;
+    }
   }
 }

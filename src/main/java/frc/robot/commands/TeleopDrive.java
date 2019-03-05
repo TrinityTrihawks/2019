@@ -35,8 +35,12 @@ public class TeleopDrive extends Command {
     double twist = Robot.oi.getJoystickTwist();
     double slider = Robot.oi.getSlider();
     boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
-    boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
+    // boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
+
+    if (Robot.oi.controller.getTriggerPressed()) {
+      Robot.switchPerspective();
+    }
 
     if(slider < 0.1) {
       slider = 0.1;
@@ -50,19 +54,12 @@ public class TeleopDrive extends Command {
       twist = 0;
     }
 
-    if(Math.abs(magnitude) < 0.4) {
-      magnitude = 0;
-    }
-
-    // if(Math.abs(twist) < 0.2) {
-    //   twist = 0;
-    // }
  
     //magnitude *= .5;
     twist *= .5;
 
     
-    if(driveInReverse) {
+    if(Robot.drivePerspective == Robot.DrivePerspectives.CARGO) {
       magnitude = -1 * magnitude;
     }
 
