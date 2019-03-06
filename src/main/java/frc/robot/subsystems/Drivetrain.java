@@ -7,10 +7,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
+// import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
+
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -30,6 +31,7 @@ public class Drivetrain extends Subsystem {
   // Encoder encoderRight;
 
   public Drivetrain(){
+
     // create the wheels
     masterLeft = new TalonSRX(RobotMap.frontLeftWheel);
     masterRight = new TalonSRX(RobotMap.frontRightWheel);
@@ -42,7 +44,7 @@ public class Drivetrain extends Subsystem {
     slaveLeft.configFactoryDefault();
     slaveRight.configFactoryDefault();
 
-    DisableLimitSwitch();
+    disableLimitSwitch();
     // set the back wheels to mirror the front wheels
     // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
     // slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
@@ -57,8 +59,7 @@ public class Drivetrain extends Subsystem {
     // encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
   }
 
-  public void EnableLimitSwitch()
-  {
+  public void enableLimitSwitch() {
     masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
     masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
@@ -66,8 +67,7 @@ public class Drivetrain extends Subsystem {
     masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
   }
   
-  public void DisableLimitSwitch()
-  {
+  public void disableLimitSwitch() {
     masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
     masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
 

@@ -83,5 +83,10 @@ public class RobotMap {
 
   //wheel circumference in inches
   public static final double wheelCircumference = 18.84955592153876;
+
+  //TODO: measure power needed to hold hatch bar at horizontal
+  public static final double hatchBarMaintainPos = 0.125;
+  //TODO: measure hatch bar starting angle
+  public static final double hatchBarStartingAngle = 135;
   
 }

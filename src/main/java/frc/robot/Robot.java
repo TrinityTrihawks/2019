@@ -10,12 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.AxisCamera;
-import frc.robot.commands.HatchBarSteadyPower;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
@@ -38,11 +35,7 @@ public class Robot extends TimedRobot {
   public enum DrivePerspectives {
     HATCH, CARGO;
   }
-
-  public static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
-  private DrivePerspectives prevPerspective = drivePerspective;
-
-  Command hatchBarSteadyPower;
+  private static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
 
   AxisCamera cameraFront;
   AxisCamera cameraBack;
@@ -50,10 +43,7 @@ public class Robot extends TimedRobot {
   final int IMG_WIDTH = 320;
   final int IMG_HEIGHT = 240;
 
-  String CameraDisplayed;
-
   //TODO: unfold command
-  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -63,14 +53,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
       //TODO: arm power scalar on Shuffleboard
 
-    oi = new OI();
-    SmartDashboard.putNumber("Hatch arm steady power", 0);
-
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
     cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
     
-    NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
-    CameraDisplayed = cameraFront.getName();
     // CameraServer.getInstance().startAutomaticCapture(camera);
 
     // CameraServer.getInstance().getServer().setSource(source);
@@ -96,18 +81,24 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
 
-    if(drivePerspective != prevPerspective) {
-      // System.out.println("Camera displayed ||" + CameraDisplayed + "||");
-      // System.out.println("Front camera name ||" + cameraFront.getName() + "||");
+    //test to see if drive perspective should change
+    if(oi.controller.getTriggerPressed()) {
       if(drivePerspective == DrivePerspectives.CARGO) {
-        NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
-        System.out.println("Back camera currently displayed");
+        drivePerspective = DrivePerspectives.HATCH;
+        System.out.println("Drive perspective switched to HATCH");
       } else {
-        NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
-        System.out.println("Front camera currently displayed");
+        drivePerspective = DrivePerspectives.CARGO;
+        System.out.println("Drive perspective switched to CARGO");
       }
+    }
 
-      prevPerspective = drivePerspective;
+    //update dashboard camera stream to current drive perspective
+    if(drivePerspective == DrivePerspectives.CARGO) {
+      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
+      // System.out.println("Back camera currently displayed");
+    } else {
+      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
+      // System.out.println("Front camera currently displayed");
     }
 
   }
@@ -176,11 +167,7 @@ public class Robot extends TimedRobot {
         oi.testAllButtons();
   }
 
-  public static void switchPerspective() {
-    if (drivePerspective == DrivePerspectives.HATCH) {
-      drivePerspective = DrivePerspectives.CARGO;
-    } else {
-      drivePerspective = DrivePerspectives.HATCH;
-    }
+  public static DrivePerspectives getDrivePerspective() {
+    return drivePerspective;
   }
 }

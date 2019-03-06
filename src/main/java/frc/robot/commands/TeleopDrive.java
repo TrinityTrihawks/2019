@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.Robot.DrivePerspectives;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -38,10 +39,6 @@ public class TeleopDrive extends Command {
     // boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
 
-    if (Robot.oi.controller.getTriggerPressed()) {
-      Robot.switchPerspective();
-    }
-
     if(slider < 0.1) {
       slider = 0.1;
     }
@@ -59,7 +56,7 @@ public class TeleopDrive extends Command {
     twist *= .5;
 
     
-    if(Robot.drivePerspective == Robot.DrivePerspectives.CARGO) {
+    if(Robot.getDrivePerspective() == DrivePerspectives.CARGO) {
       magnitude = -1 * magnitude;
     }
 

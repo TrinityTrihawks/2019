@@ -59,53 +59,33 @@ public class HatchBar extends Subsystem {
   public void Lift(double liftPower) {
       System.out.println("Raw hatch angle:"+ liftEncoder.get());
 
-      double angle = liftEncoder.get();
-      // double scaledPower;
-      // if(liftPower > 0) {
-      //   //moving arm away from robot
-      //   scaledPower = liftPower * angle / 150;
-      // } else {
-      //   //moving arm towards robot
-      //   scaledPower = liftPower * (angle == 0 ? .25 : angle) / 60;
+      //This worked on bag and tag day
+      // if (liftPower < 0)
+      // {
+      //   liftPower *= .5;
+      //   if(angle > 45) {
+      //     liftPower = 0;
+      //   }  
       // }
 
-      double newPower = liftPower;
+      double encoderAngleInRadians = Math.toRadians(getArmAngle());
+      double gravityCompensation = RobotMap.hatchBarMaintainPos * Math.cos(encoderAngleInRadians);
 
-      if (liftPower < 0)
-      {
-        liftPower *= .5;
-        if(angle > 45) {
-          liftPower = 0;
-        }  
-      }
-
-      masterBarLift.set(ControlMode.PercentOutput, liftPower);
+      masterBarLift.set(ControlMode.PercentOutput, liftPower + gravityCompensation);
 
 
       // System.out.println("Compressor enabled: " + compressor.enabled());
-  } 
+  }
+
+  public double getArmAngle() {
+    return (-1 * liftEncoder.get()) + 90 + RobotMap.hatchBarStartingAngle;
+    //This assumes that the unscaled encoder value increases as the arm moves away from the robot
+    //If that is not the case, remove the -1
+  }
 
   public void resetEncoder() {
     liftEncoder.reset();
   }
-
-  //PNEUMATICS
-
-  // public void pneumaticsExtend() {
-  //   piston.set(DoubleSolenoid.Value.kForward);
-  //   System.out.println("Pneumatics forward");
-  // }
-
-  // public void pneumaticsRetract() {
-  //   piston.set(DoubleSolenoid.Value.kReverse);
-  //   System.out.println("Pneumatics reverse");
-  // }
-
-  // public void pneumaticsOff() {
-  //   piston.set(DoubleSolenoid.Value.kOff);
-  //   System.out.println("Pneumatics off");
-  // }
-
 
   //SUCTION
 
