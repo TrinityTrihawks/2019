@@ -57,9 +57,8 @@ public class HatchBar extends Subsystem {
   }
 
   public void Lift(double liftPower) {
-      System.out.println("Raw hatch angle:"+ liftEncoder.get());
-
       //This worked on bag and tag day
+      //double angle = liftEncoder.get();
       // if (liftPower < 0)
       // {
       //   liftPower *= .5;
@@ -68,19 +67,26 @@ public class HatchBar extends Subsystem {
       //   }  
       // }
 
-      double encoderAngleInRadians = Math.toRadians(getArmAngle());
-      double gravityCompensation = RobotMap.hatchBarMaintainPos * Math.cos(encoderAngleInRadians);
-
-      masterBarLift.set(ControlMode.PercentOutput, liftPower + gravityCompensation);
+      //TODO: use gravity compensation method in lift method
+      masterBarLift.set(ControlMode.PercentOutput, liftPower);
 
 
       // System.out.println("Compressor enabled: " + compressor.enabled());
   }
 
+  public double getEncoderValue() {
+    return liftEncoder.get();
+  }
+
   public double getArmAngle() {
-    return (-1 * liftEncoder.get()) + 90 + RobotMap.hatchBarStartingAngle;
+    return (-1 * getEncoderValue()) + 90 + RobotMap.hatchBarStartingAngle;
     //This assumes that the unscaled encoder value increases as the arm moves away from the robot
     //If that is not the case, remove the -1
+  }
+
+  public double getGravityCompensation() {
+    double encoderAngleInRadians = Math.toRadians(getArmAngle());
+    return RobotMap.hatchBarMaintainPos * Math.cos(encoderAngleInRadians);
   }
 
   public void resetEncoder() {

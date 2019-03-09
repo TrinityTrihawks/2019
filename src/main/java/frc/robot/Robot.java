@@ -77,9 +77,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //general robot status
+    SmartDashboard.putData(Scheduler.getInstance());
+    SmartDashboard.putString("Perspective", drivePerspective.toString());
+
+    //joystick input
     SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
     SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
+
+    //drivetrain
+    SmartDashboard.putData(drivetrain);
+
+    //hatch bar
+    SmartDashboard.putData(hatchBar);
+    // SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
+    // SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
+    // SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
+
+    //cargo arm
+    SmartDashboard.putData(cargoArm);
+
 
     //test to see if drive perspective should change
     if(oi.controller.getTriggerPressed()) {
