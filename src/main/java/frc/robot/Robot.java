@@ -7,17 +7,24 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.cscore.AxisCamera;
+import frc.robot.GlobalState;
+import frc.robot.GlobalState.DrivePerspectives;
 import frc.robot.commands.CargoArmCommand;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.HatchBarCommand;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchBar;
@@ -32,22 +39,31 @@ import frc.robot.subsystems.HatchBar;
 public class Robot extends TimedRobot {
 
 
-  public static OI oi;
-  public static Drivetrain drivetrain = new Drivetrain();
-  public static HatchBar hatchBar = new HatchBar();
+  private static OI oi;
+  private final GlobalState state;
 
+  //Subsystems
+  private final Drivetrain drivetrain;
   private final CargoArm cargoArm;
+  private final HatchBar hatchBar;
+
+  //Comands
   private final CargoArmCommand cargoArmCommand;
-
-  public enum DrivePerspectives {
-    HATCH, CARGO;
-  }
-  public static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
-
+  private final TeleopDrive teleopDrive;
+  private final HatchBarCommand hatchBarCommand;
 
   public Robot() {
+    state = new GlobalState();
+
+    drivetrain = createDrivetrain();
     cargoArm = createCargoArm();
+    hatchBar = createHatchBar();
+
+    teleopDrive = new TeleopDrive(drivetrain, oi, state);
     cargoArmCommand = new CargoArmCommand(cargoArm, oi);
+    hatchBarCommand = new HatchBarCommand(hatchBar, oi);
+
+
   }
 
   private CargoArm createCargoArm() {
@@ -56,9 +72,23 @@ public class Robot extends TimedRobot {
     return new CargoArm(cargoLift, cargoIntake);
   }
 
+  private Drivetrain createDrivetrain() {
+    TalonSRX frontLeft = new TalonSRX(RobotMap.frontLeftWheel);
+    TalonSRX frontRight = new TalonSRX(RobotMap.frontRightWheel);
+    TalonSRX backLeft = new TalonSRX(RobotMap.backLeftWheel);
+    TalonSRX backRight = new TalonSRX(RobotMap.backRightWheel);
+    return new Drivetrain(frontLeft, frontRight, backLeft, backRight);
+  }
 
-
-
+  private HatchBar createHatchBar() {
+    TalonSRX masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
+    VictorSPX slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
+    VictorSP vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
+    VictorSP vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
+    Compressor compressor = new Compressor(RobotMap.compressor);
+    Encoder liftEncoder = new  Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
+    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder);
+  }
 
 
   AxisCamera cameraFront;
@@ -104,7 +134,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //general robot status
     SmartDashboard.putData(Scheduler.getInstance());
-    SmartDashboard.putString("Perspective", drivePerspective.toString());
+    SmartDashboard.putString("Perspective", state.getPerspective().toString());
 
     //joystick input
     SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
@@ -126,17 +156,17 @@ public class Robot extends TimedRobot {
 
     //test to see if drive perspective should change
     if(oi.controller.getTriggerPressed()) {
-      if(drivePerspective == DrivePerspectives.CARGO) {
-        drivePerspective = DrivePerspectives.HATCH;
+      if(state.getPerspective() == DrivePerspectives.CARGO) {
+        state.setPerspective(DrivePerspectives.HATCH);
         System.out.println("Drive perspective switched to HATCH");
       } else {
-        drivePerspective = DrivePerspectives.CARGO;
+        state.setPerspective(DrivePerspectives.HATCH);
         System.out.println("Drive perspective switched to CARGO");
       }
     }
 
     //update dashboard camera stream to current drive perspective
-    if(drivePerspective == DrivePerspectives.CARGO) {
+    if(state.getPerspective() == DrivePerspectives.CARGO) {
       NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
       // System.out.println("Back camera currently displayed");
     } else {
@@ -173,8 +203,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    TeleopDrive teleopDrive = new TeleopDrive();
     teleopDrive.start();
+    cargoArmCommand.start();
+    hatchBarCommand.start();
 
   }
 
@@ -210,7 +241,4 @@ public class Robot extends TimedRobot {
         oi.testAllButtons();
   }
 
-  public static DrivePerspectives getDrivePerspective() {
-    return drivePerspective;
-  }
 }

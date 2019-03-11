@@ -8,18 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class AutonomousDriveForward extends Command {
 
+  private final Drivetrain drivetrain;
   double targetDistance; 
 
-  public AutonomousDriveForward(double targetDistance) {
+  public AutonomousDriveForward(Drivetrain drivetrain, double targetDistance) {
+    this.drivetrain = drivetrain;
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    requires(this.drivetrain);
 
     this.targetDistance = targetDistance;
   }
@@ -27,15 +29,15 @@ public class AutonomousDriveForward extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.Drive(0.5, 0.5);
+    drivetrain.Drive(0.5, 0.5);
     System.out.println("Drive forward command starting");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double leftEncoder = Robot.drivetrain.getLeftDistance();
-    double rightEncoder = Robot.drivetrain.getRightDistance();
+    double leftEncoder = drivetrain.getLeftDistance();
+    double rightEncoder = drivetrain.getRightDistance();
     System.out.println("Left Encoder: "+ leftEncoder);
     System.out.println("Right encoder: "+ rightEncoder);
   }
@@ -43,7 +45,7 @@ public class AutonomousDriveForward extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    double leftDistance = Robot.drivetrain.getLeftDistance();
+    double leftDistance = drivetrain.getLeftDistance();
     // double rightDistance = Robot.drivetrain.getRightDistance();
 
     if(leftDistance >= targetDistance) {
@@ -56,7 +58,7 @@ public class AutonomousDriveForward extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-      Robot.drivetrain.Drive(0, 0);
+      drivetrain.Drive(0, 0);
       System.out.println("Drive forward ended");
   }
 

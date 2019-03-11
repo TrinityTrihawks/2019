@@ -25,7 +25,7 @@ public class CargoArmCommand extends Command {
     this.oi = oi;
 
     // Use requires() here to declare subsystem dependencies
-    requires(cargoArm);
+    requires(this.cargoArm);
 
   }
 

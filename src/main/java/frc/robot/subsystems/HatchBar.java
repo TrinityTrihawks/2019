@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchBarCommand;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -38,22 +37,25 @@ public class HatchBar extends Subsystem {
   // private double outwardsScalar = 100 / 120;
   // private double inwardsScalar = 100 / 30;
 
-  public HatchBar(){
+  public HatchBar(TalonSRX masterLift, VictorSPX slaveLift, VictorSP vacuumMotor1, VictorSP vacuumMotor2,
+                  Compressor compressor, Encoder liftEncoder){
     // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
 
-    vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
-    vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
 
-    compressor = new Compressor(RobotMap.compressor);
-    compressor.start();
-  
-    masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
-    slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
 
-    slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
-    slaveBarLift.setInverted(true);
+    //Grab all the injected hardware
+    this.masterBarLift = masterLift;
+    this.slaveBarLift = slaveLift;
+    this.vacuumMotor1 = vacuumMotor1;
+    this.vacuumMotor2 = vacuumMotor2;
+    this.compressor = compressor;
+    this.liftEncoder = liftEncoder;
 
-    liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
+    // Setup
+    this.slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
+    this.slaveBarLift.setInverted(true);
+    this.compressor.start();
+    this.liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
   }
 
   public void Lift(double liftPower) {
@@ -124,6 +126,6 @@ public class HatchBar extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new HatchBarCommand());
+    // setDefaultCommand();
   }
 }

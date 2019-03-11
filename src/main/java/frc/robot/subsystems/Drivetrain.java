@@ -9,8 +9,6 @@ package frc.robot.subsystems;
 
 // import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import frc.robot.commands.TeleopDrive;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -20,107 +18,108 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class Drivetrain extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  TalonSRX masterLeft;
-  TalonSRX masterRight;
-  TalonSRX slaveLeft;
-  TalonSRX slaveRight;
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	TalonSRX masterLeft;
+	TalonSRX masterRight;
+	TalonSRX slaveLeft;
+	TalonSRX slaveRight;
 
-  // Encoder encoderLeft;
-  // Encoder encoderRight;
+	// Encoder encoderLeft;
+	// Encoder encoderRight;
 
-  public Drivetrain(){
+	public Drivetrain(TalonSRX frontLeft, TalonSRX frontRight, TalonSRX backLeft, TalonSRX backRight){
 
-    // create the wheels
-    masterLeft = new TalonSRX(RobotMap.frontLeftWheel);
-    masterRight = new TalonSRX(RobotMap.frontRightWheel);
-    slaveLeft = new TalonSRX(RobotMap.backLeftWheel);
-    slaveRight = new TalonSRX(RobotMap.backRightWheel);
+		// create the wheels
 
-    //reset all Talon config settings to avoid accidental settings carry-over
-    masterLeft.configFactoryDefault();
-    masterRight.configFactoryDefault();
-    slaveLeft.configFactoryDefault();
-    slaveRight.configFactoryDefault();
+		masterLeft = frontLeft;
+		masterRight = frontRight;
+		slaveLeft = backLeft;
+		slaveRight = backRight;
 
-    disableLimitSwitch();
-    // set the back wheels to mirror the front wheels
-    // slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
-    // slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
+		//reset all Talon config settings to avoid accidental settings carry-over
+		masterLeft.configFactoryDefault();
+		masterRight.configFactoryDefault();
+		slaveLeft.configFactoryDefault();
+		slaveRight.configFactoryDefault();
 
-    masterRight.setInverted(true);
-    slaveRight.setInverted(true);
-    // masterLeft.setInverted(true);
-    // slaveLeft.setInverted(true);
+		disableLimitSwitch();
+		// set the back wheels to mirror the front wheels
+		// slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
+		// slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
-    //create the encoders
-    // encoderLeft = new Encoder(RobotMap.leftEncoderSourceA, RobotMap.leftEncoderSourceB);
-    // encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
-  }
+		masterRight.setInverted(true);
+		slaveRight.setInverted(true);
+		// masterLeft.setInverted(true);
+		// slaveLeft.setInverted(true);
 
-  public void enableLimitSwitch() {
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+		//create the encoders
+		// encoderLeft = new Encoder(RobotMap.leftEncoderSourceA, RobotMap.leftEncoderSourceB);
+		// encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
+	}
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-  }
-  
-  public void disableLimitSwitch() {
-    masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+	public void enableLimitSwitch() {
+		masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+		masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
-    masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-    masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
-  }
+		masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+	}
+	
+	public void disableLimitSwitch() {
+		masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+		masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
 
-  public void Drive(double leftPower, double rightPower){
-    // Set power to left and right sides of the robot
-    masterLeft.set(ControlMode.PercentOutput, leftPower);
-    slaveLeft.set(ControlMode.PercentOutput, leftPower);
+		masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+		masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
+	}
 
-    masterRight.set(ControlMode.PercentOutput, rightPower);
-    slaveRight.set(ControlMode.PercentOutput, rightPower);
+	public void Drive(double leftPower, double rightPower){
+		// Set power to left and right sides of the robot
+		masterLeft.set(ControlMode.PercentOutput, leftPower);
+		slaveLeft.set(ControlMode.PercentOutput, leftPower);
 
-    // System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
+		masterRight.set(ControlMode.PercentOutput, rightPower);
+		slaveRight.set(ControlMode.PercentOutput, rightPower);
 
-    // boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
-    // boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
-    // System.out.println("Fwd closed: "+ fwdClosed);
-    // System.out.println("Rev closed: "+ revClosed);
+		// System.out.println("Left power: "+leftPower+ " Right power: "+ rightPower);
+
+		// boolean fwdClosed = masterRight.getSensorCollection().isFwdLimitSwitchClosed();
+		// boolean revClosed = masterRight.getSensorCollection().isRevLimitSwitchClosed();
+		// System.out.println("Fwd closed: "+ fwdClosed);
+		// System.out.println("Rev closed: "+ revClosed);
 
 
-  }
+	}
 
-  public double getLeftDistance() {
-    // double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
-    // double leftTicks = encoderLeft.get();
-    // return leftTicks;
-    //  return encoderTicksToDistance(leftTicks);
-    return 0;
-  }
+	public double getLeftDistance() {
+		// double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
+		// double leftTicks = encoderLeft.get();
+		// return leftTicks;
+		//  return encoderTicksToDistance(leftTicks);
+		return 0;
+	}
 
-  public double getRightDistance() {
-    // double rightTicks = masterRight.getSensorCollection().getQuadraturePosition();
-    // double rightTicks = encoderRight.get();
-    // return rightTicks;
-    //  return encoderTicksToDistance(rightTicks);
-    return 0;
-  }
+	public double getRightDistance() {
+		// double rightTicks = masterRight.getSensorCollection().getQuadraturePosition();
+		// double rightTicks = encoderRight.get();
+		// return rightTicks;
+		//  return encoderTicksToDistance(rightTicks);
+		return 0;
+	}
 
-  public void resetDistance() {
-    // encoderLeft.reset();
-    // encoderRight.reset();
-  }
+	public void resetDistance() {
+		// encoderLeft.reset();
+		// encoderRight.reset();
+	}
 
-  public double encoderTicksToDistance(double encoderTicks) {
-    // return encoderTicks / 360   * RobotMap.wheelCircumference;
-    return 0;
-  }
+	public double encoderTicksToDistance(double encoderTicks) {
+		// return encoderTicks / 360   * RobotMap.wheelCircumference;
+		return 0;
+	}
 
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new TeleopDrive());
-  }
+	@Override
+	public void initDefaultCommand() {
+		// setDefaultCommand();
+	}
 }

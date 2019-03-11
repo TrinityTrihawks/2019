@@ -8,19 +8,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.Robot.DrivePerspectives;
+import frc.robot.GlobalState;
+import frc.robot.OI;
+import frc.robot.GlobalState.DrivePerspectives;
+import frc.robot.subsystems.Drivetrain;
+
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class TeleopDrive extends Command {
 
-  public TeleopDrive() {
+  final Drivetrain drivetrain;
+  final OI oi;
+  final GlobalState state;
+
+  public TeleopDrive(Drivetrain drivetrain, OI oi, GlobalState state) {
+    this.drivetrain = drivetrain;
+    this.oi = oi;
+    this.state = state;
+
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
-    // requires(Robot.pneumatics);
+    requires(this.drivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -32,10 +41,10 @@ public class TeleopDrive extends Command {
   @Override
   protected void execute() {
     // get power values from the controller
-    double magnitude = Robot.oi.getJoystickVerticalAxis();
-    double twist = Robot.oi.getJoystickTwist();
-    double slider = Robot.oi.getSlider();
-    boolean shouldDriveStraight = Robot.oi.getJoystickSideButton();
+    double magnitude = oi.getJoystickVerticalAxis();
+    double twist = oi.getJoystickTwist();
+    double slider = oi.getSlider();
+    boolean shouldDriveStraight = oi.getJoystickSideButton();
     // boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
 
@@ -55,7 +64,7 @@ public class TeleopDrive extends Command {
     //magnitude *= .5;
     twist *= .5;
     
-    if(Robot.getDrivePerspective() == DrivePerspectives.CARGO) {
+    if(state.getPerspective() == DrivePerspectives.CARGO) {
       magnitude = -1 * magnitude;
     }
 
@@ -64,10 +73,10 @@ public class TeleopDrive extends Command {
 
     System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
-    Robot.drivetrain.Drive(leftPower, rightPower);
+    drivetrain.Drive(leftPower, rightPower);
 
-    double leftEncoder = Robot.drivetrain.getLeftDistance();
-    double rightEncoder = Robot.drivetrain.getRightDistance();
+    double leftEncoder = drivetrain.getLeftDistance();
+    double rightEncoder = drivetrain.getRightDistance();
     // System.out.println("Left Encoder: "+ leftEncoder);
     // System.out.println("Right encoder: "+ rightEncoder);
 
