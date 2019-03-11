@@ -8,17 +8,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.CargoArm;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class CargoArmCommand extends Command {
 
-  public CargoArmCommand() {
+    CargoArm cargoArm;
+    OI oi;
+
+  public CargoArmCommand(CargoArm cargoArm, OI oi) {
+    this.cargoArm = cargoArm;
+    this.oi = oi;
+
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.cargoArm);
+    requires(cargoArm);
 
   }
 
@@ -30,19 +37,19 @@ public class CargoArmCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double power = Robot.oi.XboxController.getRawAxis(RobotMap.XboxRightAxis);
+    double power = oi.XboxGetAxis(RobotMap.XboxRightAxis);
     power = power * 0.2;
-    Robot.cargoArm.Lift(power);
+    cargoArm.Lift(power);
     // System.out.println("Cargo arm: "+ power);
 
     //TODO: override limit switch to intake/spit ball
 
-    if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonX)) {
-        Robot.cargoArm.intake();
-    } else if(Robot.oi.XboxController.getRawButton(RobotMap.XboxButtonB)) {
-        Robot.cargoArm.spit();
+    if(oi.XboxGetButton(RobotMap.XboxButtonX)) {
+        cargoArm.intake();
+    } else if(oi.XboxGetButton(RobotMap.XboxButtonB)) {
+        cargoArm.spit();
     } else {
-        Robot.cargoArm.off();
+        cargoArm.off();
     }
 
   }

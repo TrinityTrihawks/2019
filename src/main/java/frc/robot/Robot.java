@@ -12,7 +12,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.cscore.AxisCamera;
+import frc.robot.commands.CargoArmCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
@@ -26,16 +30,36 @@ import frc.robot.subsystems.HatchBar;
  */
 
 public class Robot extends TimedRobot {
-  public static Drivetrain drivetrain = new Drivetrain();
-  public static HatchBar hatchBar = new HatchBar();
-  public static CargoArm cargoArm = new CargoArm();
+
 
   public static OI oi;
+  public static Drivetrain drivetrain = new Drivetrain();
+  public static HatchBar hatchBar = new HatchBar();
+
+  private final CargoArm cargoArm;
+  private final CargoArmCommand cargoArmCommand;
 
   public enum DrivePerspectives {
     HATCH, CARGO;
   }
-  private static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
+  public static DrivePerspectives drivePerspective = DrivePerspectives.HATCH;
+
+
+  public Robot() {
+    cargoArm = createCargoArm();
+    cargoArmCommand = new CargoArmCommand(cargoArm, oi);
+  }
+
+  private CargoArm createCargoArm() {
+    TalonSRX cargoLift = new TalonSRX(RobotMap.cargoLift);
+    TalonSRX cargoIntake = new TalonSRX(RobotMap.cargoIntake);
+    return new CargoArm(cargoLift, cargoIntake);
+  }
+
+
+
+
+
 
   AxisCamera cameraFront;
   AxisCamera cameraBack;
@@ -51,6 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
       //TODO: arm power scalar on Shuffleboard
 
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);

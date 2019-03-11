@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.CargoArmCommand;
 
@@ -21,13 +22,15 @@ public class CargoArm extends Subsystem {
   // Put methods  controlling this subsystem
   // here. Call these from Commands.
 
-  TalonSRX cargoLift;
-  TalonSRX cargoIntake;
+  private final TalonSRX cargoLift;
+  private final TalonSRX cargoIntake;
 
-  public CargoArm(){
-    cargoLift = new TalonSRX(RobotMap.cargoLift);
-    cargoIntake = new TalonSRX(RobotMap.cargoIntake);
-
+  public CargoArm(TalonSRX cargoLift, TalonSRX cargoIntake){
+    // These hardware objects are "injected" to this class via the constructor
+    // This allows us to instantiate this class with mocked hardware so that we
+    // test its functionality away from the robot
+    this.cargoLift = cargoLift;
+    this.cargoIntake = cargoIntake;
   }
 
   public void Lift(double liftPower) {
@@ -51,6 +54,7 @@ public class CargoArm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new CargoArmCommand());
+    //The subsystem really shouldn't have to know anything about the command.
+    //This allows us to mock our subystem without it deending on a command
   }
 }
