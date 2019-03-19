@@ -52,7 +52,7 @@ public class TeleopDrive extends Command {
       slider = 0.1;
     }
 
-    if(Math.abs(magnitude) < 0.4) {
+    if(Math.abs(magnitude) < 0.2) {
       magnitude = 0;
     }
 
@@ -60,9 +60,13 @@ public class TeleopDrive extends Command {
       twist = 0;
     }
 
+    if(Math.abs(twist) < .2) {
+      twist = 0;
+    }
+
  
     //magnitude *= .5;
-    twist *= .5;
+    twist *= .4;
     
     if(state.getPerspective() == DrivePerspectives.CARGO) {
       magnitude = -1 * magnitude;
@@ -71,12 +75,12 @@ public class TeleopDrive extends Command {
     double leftPower = magnitude * slider + twist;
     double rightPower = magnitude * slider - twist;
 
-    System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
+    // System.out.println("leftPower: " + leftPower +" rightPower: " + rightPower + " twist: " + twist);
 
     drivetrain.Drive(leftPower, rightPower);
 
-    double leftEncoder = drivetrain.getLeftDistance();
-    double rightEncoder = drivetrain.getRightDistance();
+    // double leftEncoder = drivetrain.getLeftDistance();
+    // double rightEncoder = drivetrain.getRightDistance();
     // System.out.println("Left Encoder: "+ leftEncoder);
     // System.out.println("Right encoder: "+ rightEncoder);
 

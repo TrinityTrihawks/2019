@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.commands.HatchBarCommand;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -34,11 +36,19 @@ public class HatchBar extends Subsystem {
 
   Encoder liftEncoder;
 
+  OI oi;
+
+  public enum SuctionState {
+    IN, OUT, OFF;
+  }
+
+  SuctionState suctionState = SuctionState.IN;
+
   // private double outwardsScalar = 100 / 120;
   // private double inwardsScalar = 100 / 30;
 
   public HatchBar(TalonSRX masterLift, VictorSPX slaveLift, VictorSP vacuumMotor1, VictorSP vacuumMotor2,
-                  Compressor compressor, Encoder liftEncoder){
+                  Compressor compressor, Encoder liftEncoder, OI oi){
     // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
 
 
@@ -50,12 +60,13 @@ public class HatchBar extends Subsystem {
     this.vacuumMotor2 = vacuumMotor2;
     this.compressor = compressor;
     this.liftEncoder = liftEncoder;
+    this.oi = oi;
 
     // Setup
     this.slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
     this.slaveBarLift.setInverted(true);
-    this.compressor.start();
-    this.liftEncoder = new Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
+    suctionOff();
+
   }
 
   public void Lift(double liftPower) {
@@ -70,7 +81,10 @@ public class HatchBar extends Subsystem {
       // }
 
       //TODO: use gravity compensation method in lift method
+
+      liftPower *= 0.8;
       masterBarLift.set(ControlMode.PercentOutput, liftPower);
+      // System.out.println("Hatch bar lift (subsystem): "+liftPower);
 
 
       // System.out.println("Compressor enabled: " + compressor.enabled());
@@ -79,6 +93,15 @@ public class HatchBar extends Subsystem {
   public double getEncoderValue() {
     return liftEncoder.get();
   }
+
+  
+  public double getMasterLiftVoltage() {
+    return masterBarLift.getMotorOutputVoltage();
+  }
+  public double getSlaveLiftVoltage() {
+    return slaveBarLift.getMotorOutputVoltage();
+  }
+
 
   public double getArmAngle() {
     return (-1 * getEncoderValue()) + 90 + RobotMap.hatchBarStartingAngle;
@@ -98,24 +121,35 @@ public class HatchBar extends Subsystem {
   //SUCTION
 
   public void suctionIn() {
-    System.out.println("Suction in");
-    vacuumMotor1.set(1);
-    vacuumMotor2.set(1);
+    // System.out.println("Suction in");
+    suctionState = SuctionState.IN;
+    vacuumMotor1.set(-1);
+    vacuumMotor2.set(-1);
     compressor.stop();
   }
 
   public void suctionOff() {
-    System.out.println("Suction off");
+    // System.out.println("Suction off");
+    suctionState = SuctionState.OFF;
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
     compressor.stop();
   }
 
   public void suctionOut() {
-    System.out.println("Suction out");  
+    // System.out.println("Suction out");
+    suctionState = SuctionState.OUT;
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
     compressor.start();
+  }
+
+  public SuctionState getSuctionState() {
+    return suctionState;
+  }
+
+  public boolean isCompressorEnabled() {
+    return compressor.enabled();
   }
 
   // public double getArmAngle() {
@@ -126,6 +160,6 @@ public class HatchBar extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // setDefaultCommand();
+    setDefaultCommand(new HatchBarCommand(this, oi));
   }
 }

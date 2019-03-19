@@ -26,7 +26,6 @@ public class RobotMap {
 
   public static final int controller = 0 ; // id of controller with respect to computer
   public static final int verticalAxis = 2; // id of vertical axis within controller
-  public static final int driveInReverseButton = 11;
 
   public static final int XboxController = 1;
   
@@ -41,28 +40,28 @@ public class RobotMap {
   public static final int XboxButtonB = 3;
   public static final int XboxButtonY = 4;
 
-  //TODO: confirm these IP addresses on the 2019 competition robot
+  //TODO: confirm these IP addresses on the 2 019 competition robot
   public static final String cameraFrontIPAddress = "10.42.15.36";
   public static final String cameraBackIPAddress = "10.42.15.37";
 
   // port numbers of TalonSRXs on the RoboRio
-  public static final int frontLeftWheel = 1;
-  public static final int frontRightWheel = 9;
-  public static final int backLeftWheel = 3;
-  public static final int backRightWheel = 2;
+  public static final int frontLeftWheel = 2;
+  public static final int frontRightWheel = 12;
+  public static final int backLeftWheel = 7;
+  public static final int backRightWheel = 13;
 
   // Hatch Bar
   public static final int hatchBarTalonSRX = 6;
-  public static final int hatchBarVictorSPX = 4;
+  public static final int hatchBarVictorSPX = 16;
   public static final int vacuumMotor1 = 0;
   public static final int vacuumMotor2 = 1;
-  public static final int hatchBarEncoderSourceA = 1;
-  public static final int hatchBarEncoderSourceB = 0;
-  public static final int compressor = 7;
+  public static final int hatchBarEncoderSourceA = 0;
+  public static final int hatchBarEncoderSourceB = 1;
+  public static final int compressor = 0;
 
   //Cargo arm
-  public static final int cargoIntake = 0;
-  public static final int cargoLift = 10;
+  public static final int cargoIntake = 4; //not plugged in
+  public static final int cargoLift = 3;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;

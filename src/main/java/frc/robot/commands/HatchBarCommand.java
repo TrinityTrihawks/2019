@@ -46,7 +46,7 @@ public class HatchBarCommand extends Command {
 		// }
 
 		hatchBar.Lift(power);
-		// System.out.println("Hatch lift: " + power);
+		// System.out.println("Hatch lift from command: " + power);
 
 		if(oi.XboxController.getRawButton(RobotMap.XboxLeftTrigger)) {
 			hatchBar.suctionOff();

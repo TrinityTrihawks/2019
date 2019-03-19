@@ -20,6 +20,10 @@ public class CargoArmCommand extends Command {
     CargoArm cargoArm;
     OI oi;
 
+    private final double powerScalarTowardsBody = 0.5;
+    private final double powerScalarAwayFromBody = 0.4;
+
+
   public CargoArmCommand(CargoArm cargoArm, OI oi) {
     this.cargoArm = cargoArm;
     this.oi = oi;
@@ -38,7 +42,19 @@ public class CargoArmCommand extends Command {
   @Override
   protected void execute() {
     double power = oi.XboxGetAxis(RobotMap.XboxRightAxis);
-    power = power * 0.2;
+    // System.out.println("Cargo arm joystick "+power);
+
+
+    // Positive power: towards body
+    // Negative power: away from body
+    if(power > 0) {
+        power *= powerScalarTowardsBody;
+    } else {
+        power *= powerScalarAwayFromBody;
+    }
+
+
+    // System.out.println("Cargo arm power: "+power);
     cargoArm.Lift(power);
     // System.out.println("Cargo arm: "+ power);
 

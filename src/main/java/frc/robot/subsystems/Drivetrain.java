@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 
 // import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.GlobalState;
+import frc.robot.OI;
+import frc.robot.commands.TeleopDrive;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -20,22 +23,27 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class Drivetrain extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	TalonSRX masterLeft;
-	TalonSRX masterRight;
-	TalonSRX slaveLeft;
-	TalonSRX slaveRight;
+	private final TalonSRX masterLeft;
+	private final TalonSRX masterRight;
+	private final TalonSRX slaveLeft;
+	private final TalonSRX slaveRight;
+
+	private final OI oi;
+	private final GlobalState globalState;
 
 	// Encoder encoderLeft;
 	// Encoder encoderRight;
 
-	public Drivetrain(TalonSRX frontLeft, TalonSRX frontRight, TalonSRX backLeft, TalonSRX backRight){
+	public Drivetrain(TalonSRX frontLeft, TalonSRX frontRight, TalonSRX backLeft, TalonSRX backRight,
+						OI oi, GlobalState globalState){
 
 		// create the wheels
-
 		masterLeft = frontLeft;
 		masterRight = frontRight;
 		slaveLeft = backLeft;
 		slaveRight = backRight;
+		this.oi = oi;
+		this.globalState = globalState;
 
 		//reset all Talon config settings to avoid accidental settings carry-over
 		masterLeft.configFactoryDefault();
@@ -48,6 +56,11 @@ public class Drivetrain extends Subsystem {
 		// slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
 		// slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
+		masterRight.setNeutralMode(NeutralMode.Brake);
+		masterLeft.setNeutralMode(NeutralMode.Brake);
+		slaveRight.setNeutralMode(NeutralMode.Brake);
+		slaveLeft.setNeutralMode(NeutralMode.Brake);
+
 		masterRight.setInverted(true);
 		slaveRight.setInverted(true);
 		// masterLeft.setInverted(true);
@@ -58,13 +71,13 @@ public class Drivetrain extends Subsystem {
 		// encoderRight = new Encoder(RobotMap.rightEncoderSourceA, RobotMap.rightEncoderSourceB);
 	}
 
-	public void enableLimitSwitch() {
-		masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
-		masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+	// public void enableLimitSwitch() {
+	// 	masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+	// 	masterRight.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
-		masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-		masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-	}
+	// 	masterLeft.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+	// 	masterLeft.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+	// }
 	
 	public void disableLimitSwitch() {
 		masterRight.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.Disabled);
@@ -79,6 +92,7 @@ public class Drivetrain extends Subsystem {
 		masterLeft.set(ControlMode.PercentOutput, leftPower);
 		slaveLeft.set(ControlMode.PercentOutput, leftPower);
 
+
 		masterRight.set(ControlMode.PercentOutput, rightPower);
 		slaveRight.set(ControlMode.PercentOutput, rightPower);
 
@@ -91,6 +105,33 @@ public class Drivetrain extends Subsystem {
 
 
 	}
+
+	public double getBackLeftVoltage() {
+		return slaveLeft.getMotorOutputVoltage();
+	}
+	public double getBackRightVoltage() {
+		return slaveRight.getMotorOutputVoltage();
+	}
+	public double getFrontLeftVoltage() {
+		return masterLeft.getMotorOutputVoltage();
+	}
+	public double getFrontRightVoltage() {
+		return masterRight.getMotorOutputVoltage();
+	}
+
+	public int getBackLeftID() {
+		return slaveLeft.getDeviceID();
+	}
+	public int getBackRightID() {
+		return slaveRight.getDeviceID();
+	}
+	public int getFrontLeftID() {
+		return masterLeft.getDeviceID();
+	}
+	public int getFrontRightID() {
+		return masterRight.getDeviceID();
+	}
+
 
 	public double getLeftDistance() {
 		// double leftTicks = masterLeft.getSensorCollection().getQuadraturePosition();
@@ -120,6 +161,6 @@ public class Drivetrain extends Subsystem {
 
 	@Override
 	public void initDefaultCommand() {
-		// setDefaultCommand();
+		setDefaultCommand(new TeleopDrive(this, oi, globalState));
 	}
 }

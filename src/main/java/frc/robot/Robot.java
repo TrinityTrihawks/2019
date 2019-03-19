@@ -39,7 +39,7 @@ import frc.robot.subsystems.HatchBar;
 public class Robot extends TimedRobot {
 
 
-  private static OI oi;
+  private final OI oi;
   private final GlobalState state;
 
   //Subsystems
@@ -48,46 +48,48 @@ public class Robot extends TimedRobot {
   private final HatchBar hatchBar;
 
   //Comands
-  private final CargoArmCommand cargoArmCommand;
-  private final TeleopDrive teleopDrive;
-  private final HatchBarCommand hatchBarCommand;
+  // private final CargoArmCommand cargoArmCommand;
+  // private final TeleopDrive teleopDrive;
+  // private final HatchBarCommand hatchBarCommand;
 
   public Robot() {
+    System.out.println("Robot constructor");
+
+    oi = new OI();
     state = new GlobalState();
 
-    drivetrain = createDrivetrain();
-    cargoArm = createCargoArm();
-    hatchBar = createHatchBar();
+    drivetrain = createDrivetrain(oi, state);
+    cargoArm = createCargoArm(oi);
+    hatchBar = createHatchBar(oi);
 
-    teleopDrive = new TeleopDrive(drivetrain, oi, state);
-    cargoArmCommand = new CargoArmCommand(cargoArm, oi);
-    hatchBarCommand = new HatchBarCommand(hatchBar, oi);
-
+    // teleopDrive = new TeleopDrive(drivetrain, oi, state);
+    // cargoArmCommand = new CargoArmCommand(cargoArm, oi);
+    // hatchBarCommand = new HatchBarCommand(hatchBar, oi);
 
   }
 
-  private CargoArm createCargoArm() {
+  private CargoArm createCargoArm(OI oi) {
     TalonSRX cargoLift = new TalonSRX(RobotMap.cargoLift);
     TalonSRX cargoIntake = new TalonSRX(RobotMap.cargoIntake);
-    return new CargoArm(cargoLift, cargoIntake);
+    return new CargoArm(cargoLift, cargoIntake, oi);
   }
 
-  private Drivetrain createDrivetrain() {
+  private Drivetrain createDrivetrain(OI oi, GlobalState state) {
     TalonSRX frontLeft = new TalonSRX(RobotMap.frontLeftWheel);
     TalonSRX frontRight = new TalonSRX(RobotMap.frontRightWheel);
     TalonSRX backLeft = new TalonSRX(RobotMap.backLeftWheel);
     TalonSRX backRight = new TalonSRX(RobotMap.backRightWheel);
-    return new Drivetrain(frontLeft, frontRight, backLeft, backRight);
+    return new Drivetrain(frontLeft, frontRight, backLeft, backRight, oi, state);
   }
 
-  private HatchBar createHatchBar() {
+  private HatchBar createHatchBar(OI oi) {
     TalonSRX masterBarLift = new TalonSRX(RobotMap.hatchBarTalonSRX);
     VictorSPX slaveBarLift = new VictorSPX(RobotMap.hatchBarVictorSPX);
     VictorSP vacuumMotor1 = new VictorSP(RobotMap.vacuumMotor1);
     VictorSP vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
     Compressor compressor = new Compressor(RobotMap.compressor);
     Encoder liftEncoder = new  Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
-    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder);
+    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder, oi);
   }
 
 
@@ -111,14 +113,23 @@ public class Robot extends TimedRobot {
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
     cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
     
+    //subsystems
+    SmartDashboard.putData(drivetrain);
+    SmartDashboard.putData(cargoArm);
+    SmartDashboard.putData(hatchBar);
+
+
+    //run commands from SmartDashboard
+    // SmartDashboard.putData("Run teleop drive", teleopDrive);
+    // SmartDashboard.putData("Run cargo arm command", cargoArmCommand);
+    // SmartDashboard.putData("Run hatch bar command", hatchBarCommand);
+
     // CameraServer.getInstance().startAutomaticCapture(camera);
 
     // CameraServer.getInstance().getServer().setSource(source);
     // NetworkTableInstance.getDefault().getTable("").putData("CameraSelection", camera.getName());
 		// camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     //System.out.println("Front camera initialized properly");
-    
-
 		 
   }
 
@@ -142,17 +153,23 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Joystick slider", oi.getSlider());
 
     //drivetrain
-    SmartDashboard.putData(drivetrain);
+    SmartDashboard.putNumber("Back left voltage", drivetrain.getBackLeftVoltage());
+    SmartDashboard.putNumber("Back right voltage", drivetrain.getBackRightVoltage());
+    SmartDashboard.putNumber("Front left voltage", drivetrain.getFrontLeftVoltage());
+    SmartDashboard.putNumber("Front right voltage", drivetrain.getFrontRightVoltage());
 
     //hatch bar
-    SmartDashboard.putData(hatchBar);
-    // SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
-    // SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
-    // SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
+    SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
+    SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
+    SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
+    SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
+    SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
+    SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
+    SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
 
     //cargo arm
-    SmartDashboard.putData(cargoArm);
-
+    SmartDashboard.putNumber("Cargo arm lift voltage",cargoArm.getLiftVoltage());
+    SmartDashboard.putNumber("Carog arm intake voltage", cargoArm.getIntakeVoltage());
 
     //test to see if drive perspective should change
     if(oi.controller.getTriggerPressed()) {
@@ -160,7 +177,7 @@ public class Robot extends TimedRobot {
         state.setPerspective(DrivePerspectives.HATCH);
         System.out.println("Drive perspective switched to HATCH");
       } else {
-        state.setPerspective(DrivePerspectives.HATCH);
+        state.setPerspective(DrivePerspectives.CARGO);
         System.out.println("Drive perspective switched to CARGO");
       }
     }
@@ -203,9 +220,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    teleopDrive.start();
-    cargoArmCommand.start();
-    hatchBarCommand.start();
+    // teleopDrive.start();
+    // cargoArmCommand.start();
+    // hatchBarCommand.start();
 
   }
 
@@ -219,6 +236,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // teleopDrive.start();
+    // cargoArmCommand.start();
+    // hatchBarCommand.start();
+
     hatchBar.resetEncoder();
 
     Scheduler.getInstance().run();
