@@ -41,8 +41,8 @@ public class RobotMap {
   public static final int XboxButtonY = 4;
 
   //TODO: confirm these IP addresses on the 2 019 competition robot
-  public static final String cameraFrontIPAddress = "10.42.15.36";
-  public static final String cameraBackIPAddress = "10.42.15.37";
+  public static final String cameraFrontIPAddress = "10.42.15.37";
+  public static final String cameraBackIPAddress = "10.42.15.39";
 
   // port numbers of TalonSRXs on the RoboRio
   public static final int frontLeftWheel = 2;

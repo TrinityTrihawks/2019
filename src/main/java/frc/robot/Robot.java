@@ -8,7 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -89,7 +91,8 @@ public class Robot extends TimedRobot {
     VictorSP vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
     Compressor compressor = new Compressor(RobotMap.compressor);
     Encoder liftEncoder = new  Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
-    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder, oi);
+    Solenoid solenoid = new Solenoid(0);
+    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder, solenoid, oi);
   }
 
 
@@ -148,9 +151,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Perspective", state.getPerspective().toString());
 
     //joystick input
-    SmartDashboard.putNumber("Joystick vertical axis", oi.getJoystickVerticalAxis());
-    SmartDashboard.putNumber("Joystick twist", oi.getJoystickTwist());
-    SmartDashboard.putNumber("Joystick slider", oi.getSlider());
+    SmartDashboard.putNumber("Drive joystick vertical axis", oi.getJoystickVerticalAxis());
+    SmartDashboard.putNumber("Drive joystick twist", oi.getJoystickTwist());
+    SmartDashboard.putNumber("Drive joystick slider", oi.getSlider());
+
+    SmartDashboard.putNumber("Arm joystick left axis", oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis));
+    SmartDashboard.putNumber("Arm joystick right axis", oi.XboxController.getRawAxis(RobotMap.XboxRightAxis));
 
     //drivetrain
     SmartDashboard.putNumber("Back left voltage", drivetrain.getBackLeftVoltage());
@@ -239,8 +245,6 @@ public class Robot extends TimedRobot {
     // teleopDrive.start();
     // cargoArmCommand.start();
     // hatchBarCommand.start();
-
-    hatchBar.resetEncoder();
 
     Scheduler.getInstance().run();
   }

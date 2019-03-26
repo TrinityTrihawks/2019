@@ -20,6 +20,9 @@ public class HatchBarCommand extends Command {
 	private final HatchBar hatchBar;
 	private final OI oi;
 
+	// private final double powerScalarTowardsBody = 0.3;
+	// private final double powerScalarAwayFromBody = 0.3;
+
 	public HatchBarCommand(HatchBar hatchBar, OI oi) {
 		this.hatchBar = hatchBar;
 		this.oi = oi;
@@ -45,6 +48,8 @@ public class HatchBarCommand extends Command {
 		//     baseLinePower = 0.2;
 		// }
 
+
+
 		hatchBar.Lift(power);
 		// System.out.println("Hatch lift from command: " + power);
 
@@ -54,6 +59,10 @@ public class HatchBarCommand extends Command {
 			hatchBar.suctionIn();
 		} else if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
 			hatchBar.suctionOut();
+		}
+
+		if(oi.XboxController.getRawButton(RobotMap.XboxRightTrigger)) {
+			hatchBar.overrideArmLimits();
 		}
 
 		// //TODO: put safeguards in pneumatics extend and retract code
