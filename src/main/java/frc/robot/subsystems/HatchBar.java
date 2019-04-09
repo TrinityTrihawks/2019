@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -41,6 +42,7 @@ public class HatchBar extends Subsystem {
 
   Compressor compressor;
   Solenoid solenoid;
+  Solenoid solenoidReverse;
 
   Encoder liftEncoder;
 
@@ -58,7 +60,7 @@ public class HatchBar extends Subsystem {
   // private double inwardsScalar = 100 / 30;
 
   public HatchBar(TalonSRX masterLift, VictorSPX slaveLift, VictorSP vacuumMotor1, VictorSP vacuumMotor2,
-                  Compressor compressor, Encoder liftEncoder, Solenoid solenoid, OI oi){
+                  Compressor compressor, Encoder liftEncoder, Solenoid solenoid, Solenoid solenoidReverse, OI oi){
     // piston = new DoubleSolenoid(RobotMap.solenoidForwardChannel, RobotMap.solenoidReverseChannel);
 
 
@@ -70,17 +72,18 @@ public class HatchBar extends Subsystem {
     this.vacuumMotor2 = vacuumMotor2;
     this.compressor = compressor;
     this.solenoid = solenoid;
+    this.solenoidReverse = solenoidReverse;
     this.liftEncoder = liftEncoder;
     this.oi = oi;
 
     // Setup
-    initDefaultCommand();
+    //initDefaultCommand();
     // this.slaveBarLift.set(ControlMode.Follower, RobotMap.hatchBarTalonSRX);
     this.masterBarLift.setInverted(false);
     this.slaveBarLift.setInverted(false);
     this.liftEncoder.setReverseDirection(true);
     this.liftEncoder.reset();
-    suctionOff();
+    // suctionOff();
 
   }
 
@@ -162,33 +165,41 @@ public class HatchBar extends Subsystem {
   //SUCTION
 
   public void suctionIn() {
-    // System.out.println("Suction in");
+    System.out.println("Suction in");
     suctionState = SuctionState.IN;
     vacuumMotor1.set(-1);
     vacuumMotor2.set(-1);
-    compressor.stop();
-    solenoid.set(true);
+    // compressor.stop();
+    
   }
 
   public void suctionOff() {
-    // System.out.println("Suction off");
+    System.out.println("Suction off");
     suctionState = SuctionState.OFF;
     vacuumMotor1.set(0);
     vacuumMotor2.set(0);
-    compressor.stop();
-    solenoid.set(false);
+    // compressor.stop();
 
   }
 
-  public void suctionOut() {
-    // System.out.println("Suction out");
-    suctionState = SuctionState.OUT;
-    vacuumMotor1.set(0);
-    vacuumMotor2.set(0);
-    compressor.start();
-    solenoid.set(false);
-
+  public void releaseAir() {
+    solenoid.set(true);
+    solenoidReverse.set(false);
   }
+
+  public void keepAir() {
+    solenoid.set(false);
+    solenoidReverse.set(true);
+  }  
+
+  // public void suctionOut() {
+  //   System.out.println("Suction out");
+  //   suctionState = SuctionState.OUT;
+  //   vacuumMotor1.set(0);
+  //   vacuumMotor2.set(0);
+  //   // compressor.start();
+
+  // }
 
   public SuctionState getSuctionState() {
     return suctionState;

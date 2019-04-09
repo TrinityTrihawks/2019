@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -33,6 +34,8 @@ public class CargoArm extends Subsystem {
     this.cargoLift = cargoLift;
     this.cargoIntake = cargoIntake;
     this.oi = oi;
+
+    this.cargoIntake.setNeutralMode(NeutralMode.Brake);
   }
 
   public void Lift(double liftPower) {

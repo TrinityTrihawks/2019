@@ -68,9 +68,9 @@ public class TeleopDrive extends Command {
     //magnitude *= .5;
     twist *= .4;
     
-    if(state.getPerspective() == DrivePerspectives.CARGO) {
-      magnitude = -1 * magnitude;
-    }
+    // if(state.getPerspective() == DrivePerspectives.CARGO) {
+    //   magnitude = -1 * magnitude;
+    // }
 
     double leftPower = magnitude * slider + twist;
     double rightPower = magnitude * slider - twist;

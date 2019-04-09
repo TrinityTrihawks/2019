@@ -53,12 +53,19 @@ public class HatchBarCommand extends Command {
 		hatchBar.Lift(power);
 		// System.out.println("Hatch lift from command: " + power);
 
-		if(oi.XboxController.getRawButton(RobotMap.XboxLeftTrigger)) {
+		if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
 			hatchBar.suctionOff();
 		} else if(oi.XboxController.getRawButton(RobotMap.XboxLeftBumper)) {
 			hatchBar.suctionIn();
-		} else if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
-			hatchBar.suctionOut();
+		}
+		// } else if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
+		// 	hatchBar.suctionOut();
+		// }
+
+		if(oi.XboxController.getRawButtonPressed(RobotMap.XboxLeftTrigger)) {
+			hatchBar.releaseAir();
+		} else if(oi.XboxController.getRawButtonPressed(RobotMap.XboxRightTrigger)) {
+			hatchBar.keepAir();
 		}
 
 		if(oi.XboxController.getRawButton(RobotMap.XboxRightTrigger)) {

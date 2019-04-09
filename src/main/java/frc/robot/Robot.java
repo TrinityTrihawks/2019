@@ -91,13 +91,14 @@ public class Robot extends TimedRobot {
     VictorSP vacuumMotor2 = new VictorSP(RobotMap.vacuumMotor2);
     Compressor compressor = new Compressor(RobotMap.compressor);
     Encoder liftEncoder = new  Encoder(RobotMap.hatchBarEncoderSourceA, RobotMap.hatchBarEncoderSourceB);
-    Solenoid solenoid = new Solenoid(0);
-    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder, solenoid, oi);
+    Solenoid solenoid = new Solenoid(7, RobotMap.solenoidForwardChannel);
+    Solenoid solenoidReverse = new Solenoid(7, RobotMap.solenoidReverseChannel);
+    return new HatchBar(masterBarLift, slaveBarLift, vacuumMotor1, vacuumMotor2, compressor, liftEncoder, solenoid, solenoidReverse, oi);
   }
 
 
   AxisCamera cameraFront;
-  AxisCamera cameraBack;
+  // AxisCamera cameraBack;
 
   final int IMG_WIDTH = 320;
   final int IMG_HEIGHT = 240;
@@ -114,7 +115,7 @@ public class Robot extends TimedRobot {
       //TODO: arm power scalar on Shuffleboard
 
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
-    cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
+    // cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
     
     //subsystems
     SmartDashboard.putData(drivetrain);
@@ -188,14 +189,14 @@ public class Robot extends TimedRobot {
       }
     }
 
-    //update dashboard camera stream to current drive perspective
-    if(state.getPerspective() == DrivePerspectives.CARGO) {
-      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
-      // System.out.println("Back camera currently displayed");
-    } else {
-      NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
-      // System.out.println("Front camera currently displayed");
-    }
+    // //update dashboard camera stream to current drive perspective
+    // if(state.getPerspective() == DrivePerspectives.CARGO) {
+    //   NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
+    //   // System.out.println("Back camera currently displayed");
+    // } else {
+    //   NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
+    //   // System.out.println("Front camera currently displayed");
+    // }
 
   }
 

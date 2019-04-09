@@ -41,27 +41,27 @@ public class RobotMap {
   public static final int XboxButtonY = 4;
 
   //TODO: confirm these IP addresses on the 2 019 competition robot
-  public static final String cameraFrontIPAddress = "10.42.15.37";
-  public static final String cameraBackIPAddress = "10.42.15.39";
+  public static final String cameraFrontIPAddress = "10.42.15.11";
+  // public static final String cameraBackIPAddress = "10.42.15.36";
 
   // port numbers of TalonSRXs on the RoboRio
-  public static final int frontLeftWheel = 2;
-  public static final int frontRightWheel = 12;
-  public static final int backLeftWheel = 7;
-  public static final int backRightWheel = 13;
+  public static final int frontLeftWheel = 1;
+  public static final int frontRightWheel = 9;
+  public static final int backLeftWheel = 3;
+  public static final int backRightWheel = 2;
 
   // Hatch Bar
   public static final int hatchBarTalonSRX = 6;
-  public static final int hatchBarVictorSPX = 16;
+  public static final int hatchBarVictorSPX = 4;
   public static final int vacuumMotor1 = 0;
   public static final int vacuumMotor2 = 1;
   public static final int hatchBarEncoderSourceA = 0;
   public static final int hatchBarEncoderSourceB = 1;
-  public static final int compressor = 0;
+  public static final int compressor = 7;
 
   //Cargo arm
-  public static final int cargoIntake = 4; //not plugged in
-  public static final int cargoLift = 3;
+  public static final int cargoIntake = 0;
+  public static final int cargoLift = 10;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;
@@ -77,8 +77,8 @@ public class RobotMap {
   public static final int rightEncoderSourceB = 3;
 
   //Pneumatics ports in the Pneumatics Control Module (PCM)
-  public static final int solenoidForwardChannel = 1;
-  public static final int solenoidReverseChannel = 0;
+  public static final int solenoidForwardChannel = 6;
+  public static final int solenoidReverseChannel = 7;
 
   //wheel circumference in inches
   public static final double wheelCircumference = 18.84955592153876;
