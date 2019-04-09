@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   //Subsystems
   private final Drivetrain drivetrain;
   private final CargoArm cargoArm;
-  private final HatchBar hatchBar;
+  // private final HatchBar hatchBar;
 
   //Comands
   // private final CargoArmCommand cargoArmCommand;
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
 
     drivetrain = createDrivetrain(oi, state);
     cargoArm = createCargoArm(oi);
-    hatchBar = createHatchBar(oi);
+    // hatchBar = createHatchBar(oi);
 
     // teleopDrive = new TeleopDrive(drivetrain, oi, state);
     // cargoArmCommand = new CargoArmCommand(cargoArm, oi);
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     //subsystems
     SmartDashboard.putData(drivetrain);
     SmartDashboard.putData(cargoArm);
-    SmartDashboard.putData(hatchBar);
+    // SmartDashboard.putData(hatchBar);
 
 
     //run commands from SmartDashboard
@@ -165,14 +165,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Front left voltage", drivetrain.getFrontLeftVoltage());
     SmartDashboard.putNumber("Front right voltage", drivetrain.getFrontRightVoltage());
 
-    //hatch bar
-    SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
-    SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
-    SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
-    SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
-    SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
-    SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
-    SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
+    // //hatch bar
+    // SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
+    // SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
+    // SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
+    // SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
+    // SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
+    // SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
+    // SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
 
     //cargo arm
     SmartDashboard.putNumber("Cargo arm lift voltage",cargoArm.getLiftVoltage());
