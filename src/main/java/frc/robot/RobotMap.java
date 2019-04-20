@@ -44,11 +44,11 @@ public class RobotMap {
   public static final String cameraFrontIPAddress = "10.42.15.11";
   // public static final String cameraBackIPAddress = "10.42.15.36";
 
-  // port numbers of TalonSRXs on the RoboRio
-  public static final int frontLeftWheel = 1;
-  public static final int frontRightWheel = 9;
-  public static final int backLeftWheel = 3;
-  public static final int backRightWheel = 2;
+  // port numbers of TalonSRX/VictorSPXs on the RoboRio
+  public static final int frontLeftWheel = 2;
+  public static final int frontRightWheel = 4;
+  public static final int backLeftWheel = 7;
+  public static final int backRightWheel = 16;
 
   // Hatch Bar
   public static final int hatchBarTalonSRX = 6;
@@ -60,8 +60,8 @@ public class RobotMap {
   public static final int compressor = 7;
 
   //Cargo arm
-  public static final int cargoIntake = 0;
-  public static final int cargoLift = 10;
+  public static final int cargoIntake = 1;
+  public static final int cargoLift = 3;
 
   // port number of PigeonIMU gyro on the RoboRio
   public static final int gyro = 1;

@@ -15,6 +15,7 @@ import frc.robot.commands.TeleopDrive;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 
 /**
@@ -26,7 +27,7 @@ public class Drivetrain extends Subsystem {
 	private final TalonSRX masterLeft;
 	private final TalonSRX masterRight;
 	private final TalonSRX slaveLeft;
-	private final TalonSRX slaveRight;
+	private final VictorSPX slaveRight;
 
 	private final OI oi;
 	private final GlobalState globalState;
@@ -34,7 +35,7 @@ public class Drivetrain extends Subsystem {
 	// Encoder encoderLeft;
 	// Encoder encoderRight;
 
-	public Drivetrain(TalonSRX frontLeft, TalonSRX frontRight, TalonSRX backLeft, TalonSRX backRight,
+	public Drivetrain(TalonSRX frontLeft, TalonSRX frontRight, TalonSRX backLeft, VictorSPX backRight,
 						OI oi, GlobalState globalState){
 
 		// create the wheels

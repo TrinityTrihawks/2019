@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
 import frc.robot.commands.CargoArmCommand;
@@ -23,19 +24,17 @@ public class CargoArm extends Subsystem {
   // here. Call these from Commands.
 
   private final TalonSRX cargoLift;
-  private final TalonSRX cargoIntake;
+  private final VictorSP cargoIntake;
 
   private final OI oi;
 
-  public CargoArm(TalonSRX cargoLift, TalonSRX cargoIntake, OI oi){
+  public CargoArm(TalonSRX cargoLift, VictorSP cargoIntake, OI oi){
     // These hardware objects are "injected" to this class via the constructor
     // This allows us to instantiate this class with mocked hardware so that we
     // test its functionality away from the robot
     this.cargoLift = cargoLift;
     this.cargoIntake = cargoIntake;
     this.oi = oi;
-
-    this.cargoIntake.setNeutralMode(NeutralMode.Brake);
   }
 
   public void Lift(double liftPower) {
@@ -45,15 +44,15 @@ public class CargoArm extends Subsystem {
 
   public void intake() {
     //   System.out.println("Intake intake");
-      cargoIntake.set(ControlMode.PercentOutput, -1);
+      cargoIntake.set(-1);
   }
   public void spit() {
     //   System.out.println("Intake spit");
-      cargoIntake.set(ControlMode.PercentOutput, 1);
+      cargoIntake.set(1);
   }
   public void off() {
     //   System.out.println("Intake off");
-      cargoIntake.set(ControlMode.PercentOutput, 0);
+      cargoIntake.set(0);
   }
 
 
@@ -62,7 +61,7 @@ public class CargoArm extends Subsystem {
   }
 
   public double getIntakeVoltage() {
-    return cargoIntake.getMotorOutputVoltage();
+    return cargoIntake.get();
   }
 
 

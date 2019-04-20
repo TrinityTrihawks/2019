@@ -40,7 +40,6 @@ import frc.robot.subsystems.HatchBar;
 
 public class Robot extends TimedRobot {
 
-
   private final OI oi;
   private final GlobalState state;
 
@@ -72,7 +71,7 @@ public class Robot extends TimedRobot {
 
   private CargoArm createCargoArm(OI oi) {
     TalonSRX cargoLift = new TalonSRX(RobotMap.cargoLift);
-    TalonSRX cargoIntake = new TalonSRX(RobotMap.cargoIntake);
+    VictorSP cargoIntake = new VictorSP(RobotMap.cargoIntake);
     return new CargoArm(cargoLift, cargoIntake, oi);
   }
 
@@ -80,7 +79,7 @@ public class Robot extends TimedRobot {
     TalonSRX frontLeft = new TalonSRX(RobotMap.frontLeftWheel);
     TalonSRX frontRight = new TalonSRX(RobotMap.frontRightWheel);
     TalonSRX backLeft = new TalonSRX(RobotMap.backLeftWheel);
-    TalonSRX backRight = new TalonSRX(RobotMap.backRightWheel);
+    VictorSPX backRight = new VictorSPX(RobotMap.backRightWheel);
     return new Drivetrain(frontLeft, frontRight, backLeft, backRight, oi, state);
   }
 
