@@ -55,6 +55,8 @@ public class Robot extends TimedRobot {
   // private final HatchBarCommand hatchBarCommand;
 
   public Robot() {
+    super(); //TimedRobot has a constructor
+
     System.out.println("Robot constructor");
 
     oi = new OI();
