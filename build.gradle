@@ -50,8 +50,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
-    // testCompile "org.mockito:mockito-core:2.+" 
-
+    testCompile "org.mockito:mockito-core:2.+"
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -72,3 +71,15 @@ compileJava {
 wrapper {
     gradleVersion = '4.9'
 }
+
+// // Define location of results webpage that Gradle/JUnit automatically creates
+// // Will need to adjust projectURI based on each computer's file system
+// def projectURI = "file:///C:/Users/dqnykamp/Documents/Robotics/Main%20Projects/2019/".toURI()
+// def reportURI = projectURI.resolve("build/reports/tests/test/index.html")
+
+// // Display test results as webpage
+// task showReport {
+//     doLast {
+//         java.awt.Desktop.desktop.browse reportURI
+//     }
+// }
