@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
   // private final TeleopDrive teleopDrive;
   // private final HatchBarCommand hatchBarCommand;
 
+  private int counter = 0;
+
   public Robot() {
     super(); //TimedRobot has a constructor
 
@@ -149,37 +151,42 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //general robot status
-    SmartDashboard.putData(Scheduler.getInstance());
-    SmartDashboard.putString("Perspective", state.getPerspective().toString());
 
-    //joystick input
-    SmartDashboard.putNumber("Drive joystick vertical axis", oi.getJoystickVerticalAxis());
-    SmartDashboard.putNumber("Drive joystick twist", oi.getJoystickTwist());
-    SmartDashboard.putNumber("Drive joystick slider", oi.getSlider());
+    if(counter % 10 == 0) {
+      //general robot status
+      SmartDashboard.putData(Scheduler.getInstance());
+      SmartDashboard.putString("Perspective", state.getPerspective().toString());
 
-    SmartDashboard.putNumber("Arm joystick left axis", oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis));
-    SmartDashboard.putNumber("Arm joystick right axis", oi.XboxController.getRawAxis(RobotMap.XboxRightAxis));
+      //joystick input
+      SmartDashboard.putNumber("Drive joystick vertical axis", oi.getJoystickVerticalAxis());
+      SmartDashboard.putNumber("Drive joystick twist", oi.getJoystickTwist());
+      SmartDashboard.putNumber("Drive joystick slider", oi.getSlider());
 
-    //drivetrain
-    SmartDashboard.putNumber("Back left voltage", drivetrain.getBackLeftVoltage());
-    SmartDashboard.putNumber("Back right voltage", drivetrain.getBackRightVoltage());
-    SmartDashboard.putNumber("Front left voltage", drivetrain.getFrontLeftVoltage());
-    SmartDashboard.putNumber("Front right voltage", drivetrain.getFrontRightVoltage());
+      SmartDashboard.putNumber("Arm joystick left axis", oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis));
+      SmartDashboard.putNumber("Arm joystick right axis", oi.XboxController.getRawAxis(RobotMap.XboxRightAxis));
 
-    //hatch bar
-    SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
-    SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
-    SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
-    SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
-    SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
-    SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
-    SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
+      //drivetrain
+      SmartDashboard.putNumber("Back left voltage", drivetrain.getBackLeftVoltage());
+      SmartDashboard.putNumber("Back right voltage", drivetrain.getBackRightVoltage());
+      SmartDashboard.putNumber("Front left voltage", drivetrain.getFrontLeftVoltage());
+      SmartDashboard.putNumber("Front right voltage", drivetrain.getFrontRightVoltage());
 
-    //cargo arm
-    SmartDashboard.putNumber("Cargo arm lift voltage",cargoArm.getLiftVoltage());
-    SmartDashboard.putNumber("Carog arm intake voltage", cargoArm.getIntakeVoltage());
+      //hatch bar
+      SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
+      SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
+      SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
+      SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
+      SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
+      SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
+      SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
 
+      //cargo arm
+      SmartDashboard.putNumber("Cargo arm lift voltage",cargoArm.getLiftVoltage());
+      SmartDashboard.putNumber("Carog arm intake voltage", cargoArm.getIntakeVoltage());
+
+    }
+    counter += 1;
+    
     //test to see if drive perspective should change
     if(oi.controller.getTriggerPressed()) {
       if(state.getPerspective() == DrivePerspectives.CARGO) {

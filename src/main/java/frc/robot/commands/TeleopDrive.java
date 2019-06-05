@@ -66,7 +66,7 @@ public class TeleopDrive extends Command {
 
  
     //magnitude *= .5;
-    twist *= .4;
+    twist *= 1;
     
     // if(state.getPerspective() == DrivePerspectives.CARGO) {
     //   magnitude = -1 * magnitude;
