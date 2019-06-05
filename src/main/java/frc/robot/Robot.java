@@ -25,6 +25,7 @@ import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
 import frc.robot.GlobalState.DrivePerspectives;
 import frc.robot.commands.CargoArmCommand;
+import frc.robot.commands.DriveBlindProfile;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.HatchBarCommand;
 import frc.robot.subsystems.CargoArm;
@@ -71,6 +72,8 @@ public class Robot extends TimedRobot {
     // teleopDrive = new TeleopDrive(drivetrain, oi, state);
     // cargoArmCommand = new CargoArmCommand(cargoArm, oi);
     // hatchBarCommand = new HatchBarCommand(hatchBar, oi);
+
+    SmartDashboard.putNumber("Auto distance", 5);
 
   }
 
@@ -216,6 +219,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    Scheduler.getInstance().removeAll();
   }
 
   @Override
@@ -265,6 +269,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    if(oi.controller.getRawButtonPressed(11)) {
+      System.out.println("Running profile command");
+      double dist = SmartDashboard.getNumber("Auto distance", 5);
+      Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
+    }
 
   }
 
