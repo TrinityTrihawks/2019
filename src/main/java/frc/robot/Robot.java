@@ -8,15 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -24,9 +21,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
 import frc.robot.GlobalState.DrivePerspectives;
-import frc.robot.commands.CargoArmCommand;
-import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.HatchBarCommand;
+import frc.robot.logging.ContinuousLogger;
+import frc.robot.logging.LogToShuffleboard;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchBar;
@@ -55,6 +51,7 @@ public class Robot extends TimedRobot {
   // private final HatchBarCommand hatchBarCommand;
 
   private int counter = 0;
+  private final ContinuousLogger logger;
 
   public Robot() {
     super(); //TimedRobot has a constructor
@@ -71,6 +68,8 @@ public class Robot extends TimedRobot {
     // teleopDrive = new TeleopDrive(drivetrain, oi, state);
     // cargoArmCommand = new CargoArmCommand(cargoArm, oi);
     // hatchBarCommand = new HatchBarCommand(hatchBar, oi);
+
+    logger = new ContinuousLogger(new LogToShuffleboard());
 
   }
 
@@ -108,7 +107,6 @@ public class Robot extends TimedRobot {
   final int IMG_HEIGHT = 240;
 
   //TODO: unfold command
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -116,15 +114,51 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-      //TODO: arm power scalar on Shuffleboard
-
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
     // cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
+
+    //scheduler
+    logger.add("Scheduler", () -> Scheduler.getInstance(), 25);
     
     //subsystems
-    SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(cargoArm);
-    SmartDashboard.putData(hatchBar);
+    logger.add("Drivetrain subsystem", () -> drivetrain, 25);
+    logger.add("Cargo Arm subsystem", () -> cargoArm, 25);
+    logger.add("Hatch Bar subystem", () -> hatchBar, 25);
+
+    
+    // joystick controls
+    logger.add("Drive joystick vertical axis", oi::getJoystickVerticalAxis, 2);
+    logger.add("Drive joystick twist", oi::getJoystickTwist, 2);
+    logger.add("Drive joystick slider", oi::getSlider, 2);
+    logger.add("Auxilary joystick left axis", () -> oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis), 2);
+    logger.add("Auxilary joystick right axis", () -> oi.XboxController.getRawAxis(RobotMap.XboxRightAxis), 2);
+
+        //drivetrain
+    logger.add("Back left voltage", drivetrain::getBackLeftVoltage, 5);
+    logger.add("Back right voltage", drivetrain::getBackRightVoltage, 5);
+    logger.add("Front left voltage", drivetrain::getFrontLeftVoltage, 5);
+    logger.add("Front right voltage", drivetrain::getFrontRightVoltage, 5);
+
+    //hatch bar
+    logger.add("Hatch lift master voltage", hatchBar::getMasterLiftVoltage, 5);
+    logger.add("Hatch lift slave voltage", hatchBar::getSlaveLiftVoltage, 5);
+    logger.add("Hatch encoder value", hatchBar::getEncoderValue, 5);
+    logger.add("Hatch arm angle", hatchBar::getArmAngle, 5);
+    logger.add("Hatch gravity compensation", hatchBar::getGravityCompensation, 5);
+    logger.add("Hatch suction state", () -> hatchBar.getSuctionState().toString(), 5);
+    logger.add("Compressor enabled", hatchBar::isCompressorEnabled, 5);
+
+    //cargo arm
+    logger.add("Cargo arm lift voltage",cargoArm::getLiftVoltage, 5);
+    logger.add("Carog arm intake voltage", cargoArm::getIntakeVoltage, 5);
+
+
+
+
+
+    // SmartDashboard.putData(drivetrain);
+    // SmartDashboard.putData(cargoArm);
+    // SmartDashboard.putData(hatchBar);
 
 
     //run commands from SmartDashboard
@@ -138,6 +172,8 @@ public class Robot extends TimedRobot {
     // NetworkTableInstance.getDefault().getTable("").putData("CameraSelection", camera.getName());
 		// camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     //System.out.println("Front camera initialized properly");
+
+
 		 
   }
 
@@ -152,40 +188,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    if(counter % 10 == 0) {
-      //general robot status
-      SmartDashboard.putData(Scheduler.getInstance());
-      SmartDashboard.putString("Perspective", state.getPerspective().toString());
-
-      //joystick input
-      SmartDashboard.putNumber("Drive joystick vertical axis", oi.getJoystickVerticalAxis());
-      SmartDashboard.putNumber("Drive joystick twist", oi.getJoystickTwist());
-      SmartDashboard.putNumber("Drive joystick slider", oi.getSlider());
-
-      SmartDashboard.putNumber("Arm joystick left axis", oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis));
-      SmartDashboard.putNumber("Arm joystick right axis", oi.XboxController.getRawAxis(RobotMap.XboxRightAxis));
-
-      //drivetrain
-      SmartDashboard.putNumber("Back left voltage", drivetrain.getBackLeftVoltage());
-      SmartDashboard.putNumber("Back right voltage", drivetrain.getBackRightVoltage());
-      SmartDashboard.putNumber("Front left voltage", drivetrain.getFrontLeftVoltage());
-      SmartDashboard.putNumber("Front right voltage", drivetrain.getFrontRightVoltage());
-
-      //hatch bar
-      SmartDashboard.putNumber("Hatch lift master voltage", hatchBar.getMasterLiftVoltage());
-      SmartDashboard.putNumber("Hatch lift slave voltage", hatchBar.getSlaveLiftVoltage());
-      SmartDashboard.putNumber("Hatch encoder value", hatchBar.getEncoderValue());
-      SmartDashboard.putNumber("Hatch arm angle", hatchBar.getArmAngle());
-      SmartDashboard.putNumber("Hatch gravity compensation", hatchBar.getGravityCompensation());
-      SmartDashboard.putString("Hatch suction state", hatchBar.getSuctionState().toString());
-      SmartDashboard.putBoolean("Compressor enabled", hatchBar.isCompressorEnabled());
-
-      //cargo arm
-      SmartDashboard.putNumber("Cargo arm lift voltage",cargoArm.getLiftVoltage());
-      SmartDashboard.putNumber("Carog arm intake voltage", cargoArm.getIntakeVoltage());
-
-    }
-    counter += 1;
+    logger.run();
     
     //test to see if drive perspective should change
     if(oi.controller.getTriggerPressed()) {
