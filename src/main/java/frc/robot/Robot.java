@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -21,6 +22,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
 import frc.robot.GlobalState.DrivePerspectives;
+import frc.robot.commands.DriveBlindProfile;
 import frc.robot.logging.ContinuousLogger;
 import frc.robot.logging.LogToShuffleboard;
 import frc.robot.subsystems.CargoArm;
@@ -219,6 +221,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    Scheduler.getInstance().removeAll();
   }
 
   @Override
@@ -268,6 +271,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    if(oi.controller.getRawButtonPressed(11)) {
+      System.out.println("Running profile command");
+      double dist = SmartDashboard.getNumber("Auto distance", 5);
+      Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
+    }
 
   }
 
