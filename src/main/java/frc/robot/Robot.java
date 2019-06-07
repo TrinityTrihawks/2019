@@ -153,15 +153,15 @@ public class Robot extends TimedRobot {
 
     //cargo arm
     logger.add("Cargo arm lift voltage",cargoArm::getLiftVoltage, 5);
-    logger.add("Carog arm intake voltage", cargoArm::getIntakeVoltage, 5);
+    logger.add("Cargo arm intake voltage", cargoArm::getIntakeVoltage, 5);
 
 
+    SmartDashboard.putNumber("Auto distance", 5);
 
 
-
-    // SmartDashboard.putData(drivetrain);
-    // SmartDashboard.putData(cargoArm);
-    // SmartDashboard.putData(hatchBar);
+    SmartDashboard.putData(drivetrain);
+    SmartDashboard.putData(cargoArm);
+    SmartDashboard.putData(hatchBar);
 
 
     //run commands from SmartDashboard

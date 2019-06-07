@@ -18,8 +18,9 @@ public class DriveBlindProfile extends Command {
 	private final double voltageMax = 12; // volts
 	private final double voltageDead = 1; // deadband where robot does not accel (volts)
 	
-    private final double Kv = (voltageMax - voltageDead) / maxVel;
-	private final double Ka = (voltageMax - voltageDead) / maxAccel;
+	private final double Kv_left = (12 - voltageDead) / maxVel;
+    private final double Kv_right = (11.5 - voltageDead) / maxVel;
+	// private final double Ka = 0.5 / maxAccel;
 	
     private int counter;
 
@@ -45,14 +46,16 @@ public class DriveBlindProfile extends Command {
         double vel = trajectory[counter].vel;
 		double accel = trajectory[counter].accel;
 
-		double motorVoltage = Kv * vel + voltageDead;
+		double motorVoltage_left = Kv_left * vel + voltageDead;
+		double motorVoltage_right = Kv_right * vel + voltageDead;
 
-		System.out.printf("\nTime: %f Vel: %f Accel: %f Voltage: %f",
-			trajectory[counter].time, vel, accel, motorVoltage
+		System.out.printf("\nTime: %f Vel: %f Accel: %f Voltage left: %f Voltage right:",
+			trajectory[counter].time, vel, accel, motorVoltage_left, motorVoltage_right
 		);
 
-		double modifiedMV = motorVoltage * 1;
-		drivetrain.Drive(modifiedMV / 12, modifiedMV / 12);
+		double modifiedMV_left = motorVoltage_left * 1;
+		double modifiedMV_right = motorVoltage_right * 1;
+		drivetrain.Drive(modifiedMV_left / 12, modifiedMV_right / 12);
 		
 		counter += 1;
 	}
