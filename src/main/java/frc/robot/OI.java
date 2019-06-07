@@ -8,14 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public class OI implements Loggable {
+public class OI {
 
   private MainJoystick main = new MainJoystick();
   private AuxiliaryJoystick aux = new AuxiliaryJoystick();
@@ -26,11 +24,6 @@ public class OI implements Loggable {
 
   public AuxiliaryJoystick getAuxiliary() {
     return aux;
-  }
-
-  @Log
-  public String hi() {
-    return "hi";
   }
 
   public class Button {
@@ -56,29 +49,24 @@ public class OI implements Loggable {
   }
 
 
-  public class MainJoystick implements Loggable {
+  public class MainJoystick {
     private Joystick joy = new Joystick(RobotMap.controller);
 
     Button trigger = new Button(joy, 1);
     Button sideThumb = new Button(joy, 2);
 
-    @Log(name = "Twist")
     public double getTwist() {
       return joy.getTwist();
     }
-    @Log(name = "Throttle")
     public double getVerticalAxis() {
       return -1 * joy.getRawAxis(1);
     }
-    @Log(name = "Slider")
     public double getSlider() {
       return (-1 * joy.getRawAxis(3) + 1) / 2;
     }
-    @Log(name = "Trigger", methodName = "isPressed")
     public Button getTrigger() {
       return trigger;
     }
-    @Log(name = "Side thumb", methodName = "isPressed")
     public Button getSideThumb() {
       return sideThumb;
     }
@@ -89,13 +77,9 @@ public class OI implements Loggable {
     public Button getButtonWithId(int id) {
       return new Button(joy, id);
     }
-
-    public String configureLogName() {
-      return "Main";
-    }
   }
 
-  public class AuxiliaryJoystick implements Loggable {
+  public class AuxiliaryJoystick {
     private Joystick xbox = new Joystick(RobotMap.XboxController);
 
     Button x = new Button(xbox, RobotMap.XboxButtonX);
@@ -109,43 +93,33 @@ public class OI implements Loggable {
     Button rightTrigger = new Button(xbox, RobotMap.XboxRightTrigger);
 
 
-    @Log(name = "Left axis")
     public double getLeftVerticalAxis() {
       return xbox.getRawAxis(RobotMap.XboxLeftAxis);
     }
-    @Log(name = "Right axis")
     public double getRightVerticalAxis() {
       return xbox.getRawAxis(RobotMap.XboxRightAxis);
     }
-    @Log(name = "X", methodName = "isPressed")
     public Button getButtonX() {
       return x;
     }
-    @Log(name = "Y", methodName = "isPressed")
     public Button getButtonY() {
       return y;
     }
-    @Log(name = "A", methodName = "isPressed")
     public Button getButtonA() {
       return a;
     }
-    @Log(name = "B", methodName = "isPressed")
     public Button getButtonB() {
       return b;
     }
-    @Log(name = "Left bumper", methodName = "isPressed")
     public Button getLeftBumper() {
       return leftBumper;
     }
-    @Log(name = "Right bumper", methodName = "isPressed")
     public Button getRightBumper() {
       return rightBumper;
     }
-    @Log(name = "Left trigger", methodName = "isPressed")
     public Button getLeftTrigger() {
       return leftTrigger;
     }
-    @Log(name = "Right trigger", methodName = "isPressed")
     public Button getRightTrigger() {
       return rightTrigger;
     }
@@ -157,18 +131,6 @@ public class OI implements Loggable {
       return new Button(xbox, id);
     }
 
-    public String configureLogName() {
-      return "Auxiliary";
-    }
-
-  }
-
-  // public String configureLogName() {
-  //   return "Controls";
-  // }
-
-  public boolean skipLayout() {
-    return false;
   }
 
 }

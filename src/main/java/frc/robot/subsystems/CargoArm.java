@@ -14,20 +14,17 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
 import frc.robot.commands.CargoArmCommand;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class CargoArm extends Subsystem implements Loggable {
+public class CargoArm extends Subsystem {
   // Put methods  controlling this subsystem
   // here. Call these from Commands.
 
   private final TalonSRX cargoLift;
   private final TalonSRX cargoIntake;
 
-  @Log.Exclude
   private final OI oi;
 
   public CargoArm(TalonSRX cargoLift, TalonSRX cargoIntake, OI oi){
@@ -60,12 +57,10 @@ public class CargoArm extends Subsystem implements Loggable {
   }
 
 
-  @Log(name = "Lift voltage")
   public double getLiftVoltage() {
     return cargoLift.getMotorOutputVoltage();
   }
 
-  @Log(name = "Intake voltage")
   public double getIntakeVoltage() {
     return cargoIntake.getMotorOutputVoltage();
   }
@@ -76,9 +71,5 @@ public class CargoArm extends Subsystem implements Loggable {
     //The subsystem really shouldn't have to know anything about the command.
     //This allows us to mock our subystem without it deending on a command
     setDefaultCommand(new CargoArmCommand(this, oi));
-  }
-
-  public String configureLogName() {
-    return "Cargo Arm";
   }
 }

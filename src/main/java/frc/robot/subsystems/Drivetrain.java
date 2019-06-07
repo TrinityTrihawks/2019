@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.GlobalState;
 import frc.robot.OI;
 import frc.robot.commands.TeleopDrive;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
-
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -22,7 +19,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class Drivetrain extends Subsystem implements Loggable {
+public class Drivetrain extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	private final TalonSRX masterLeft;
@@ -32,7 +29,6 @@ public class Drivetrain extends Subsystem implements Loggable {
 
 	private final GlobalState globalState;
 
-	@Log.Exclude
 	private final OI oi;
 
 	// Encoder encoderLeft;
@@ -109,19 +105,15 @@ public class Drivetrain extends Subsystem implements Loggable {
 		// System.out.println("Rev closed: "+ revClosed);ghvfvfghcvbfgdgf
 	}
 
-	@Log(name = "Back left voltage")
 	public double getBackLeftVoltage() {
 		return slaveLeft.getMotorOutputVoltage();
 	}
-	@Log(name = "Back right voltage")
 	public double getBackRightVoltage() {
 		return slaveRight.getMotorOutputVoltage();
 	}
-	@Log(name = "Front left voltage")
 	public double getFrontLeftVoltage() {
 		return masterLeft.getMotorOutputVoltage();
 	}
-	@Log(name = "Front right voltage")
 	public double getFrontRightVoltage() {
 		return masterRight.getMotorOutputVoltage();
 	}
@@ -169,9 +161,5 @@ public class Drivetrain extends Subsystem implements Loggable {
 	@Override
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive(this, oi, globalState));
-	}
-
-	public String configureLogName() {
-		return "Drivetrain";
 	}
 }

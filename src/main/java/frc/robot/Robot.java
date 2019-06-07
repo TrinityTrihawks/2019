@@ -28,8 +28,7 @@ import frc.robot.logging.LogToShuffleboard;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchBar;
-import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Log;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -66,9 +65,7 @@ public class Robot extends TimedRobot {
     state = new GlobalState();
 
     drivetrain = createDrivetrain(oi, state);
-
     cargoArm = createCargoArm(oi);
-
     hatchBar = createHatchBar(oi);
 
     // teleopDrive = new TeleopDrive(drivetrain, oi, state);
@@ -120,46 +117,43 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    // Logger.configureLogging(this);
-    Logger.configureLoggingNTOnly(this, "Telemetry");
-
     cameraFront = CameraServer.getInstance().addAxisCamera("Front Camera", RobotMap.cameraFrontIPAddress);
     // cameraBack = CameraServer.getInstance().addAxisCamera("Back Camera", RobotMap.cameraBackIPAddress);
 
-    // //scheduler
-    // logger.add("Scheduler", () -> Scheduler.getInstance(), 25);
+    //scheduler
+    logger.add("Scheduler", () -> Scheduler.getInstance(), 25);
     
-    // //subsystems
-    // logger.add("Drivetrain subsystem", () -> drivetrain, 25);
-    // logger.add("Cargo Arm subsystem", () -> cargoArm, 25);
-    // logger.add("Hatch Bar subystem", () -> hatchBar, 25);
+    //subsystems
+    logger.add("Drivetrain subsystem", () -> drivetrain, 25);
+    logger.add("Cargo Arm subsystem", () -> cargoArm, 25);
+    logger.add("Hatch Bar subystem", () -> hatchBar, 25);
 
     
-    // // joystick controls
-    // logger.add("Drive joystick vertical axis", oi::getJoystickVerticalAxis, 2);
-    // logger.add("Drive joystick twist", oi::getJoystickTwist, 2);
-    // logger.add("Drive joystick slider", oi::getSlider, 2);
-    // logger.add("Auxilary joystick left axis", () -> oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis), 2);
-    // logger.add("Auxilary joystick right axis", () -> oi.XboxController.getRawAxis(RobotMap.XboxRightAxis), 2);
+    // joystick controls
+    logger.add("Drive joystick vertical axis", () -> oi.getMain().getVerticalAxis(), 2);
+    logger.add("Drive joystick twist", () -> oi.getMain().getTwist(), 2);
+    logger.add("Drive joystick slider", () -> oi.getMain().getSlider(), 2);
+    logger.add("Auxilary joystick left axis", () -> oi.getAuxiliary().getLeftVerticalAxis(), 2);
+    logger.add("Auxilary joystick right axis", () -> oi.getAuxiliary().getRightVerticalAxis(), 2);
 
-    //     //drivetrain
-    // logger.add("Back left voltage", drivetrain::getBackLeftVoltage, 5);
-    // logger.add("Back right voltage", drivetrain::getBackRightVoltage, 5);
-    // logger.add("Front left voltage", drivetrain::getFrontLeftVoltage, 5);
-    // logger.add("Front right voltage", drivetrain::getFrontRightVoltage, 5);
+        //drivetrain
+    logger.add("Back left voltage", drivetrain::getBackLeftVoltage, 5);
+    logger.add("Back right voltage", drivetrain::getBackRightVoltage, 5);
+    logger.add("Front left voltage", drivetrain::getFrontLeftVoltage, 5);
+    logger.add("Front right voltage", drivetrain::getFrontRightVoltage, 5);
 
-    // //hatch bar
-    // logger.add("Hatch lift master voltage", hatchBar::getMasterLiftVoltage, 5);
-    // logger.add("Hatch lift slave voltage", hatchBar::getSlaveLiftVoltage, 5);
-    // logger.add("Hatch encoder value", hatchBar::getEncoderValue, 5);
-    // logger.add("Hatch arm angle", hatchBar::getArmAngle, 5);
-    // logger.add("Hatch gravity compensation", hatchBar::getGravityCompensation, 5);
-    // logger.add("Hatch suction state", () -> hatchBar.getSuctionState().toString(), 5);
-    // logger.add("Compressor enabled", hatchBar::isCompressorEnabled, 5);
+    //hatch bar
+    logger.add("Hatch lift master voltage", hatchBar::getMasterLiftVoltage, 5);
+    logger.add("Hatch lift slave voltage", hatchBar::getSlaveLiftVoltage, 5);
+    logger.add("Hatch encoder value", hatchBar::getEncoderValue, 5);
+    logger.add("Hatch arm angle", hatchBar::getArmAngle, 5);
+    logger.add("Hatch gravity compensation", hatchBar::getGravityCompensation, 5);
+    logger.add("Hatch suction state", () -> hatchBar.getSuctionState().toString(), 5);
+    logger.add("Compressor enabled", hatchBar::isCompressorEnabled, 5);
 
-    // //cargo arm
-    // logger.add("Cargo arm lift voltage",cargoArm::getLiftVoltage, 5);
-    // logger.add("Carog arm intake voltage", cargoArm::getIntakeVoltage, 5);
+    //cargo arm
+    logger.add("Cargo arm lift voltage",cargoArm::getLiftVoltage, 5);
+    logger.add("Carog arm intake voltage", cargoArm::getIntakeVoltage, 5);
 
 
 
@@ -196,13 +190,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  
-    if(counter % 10 == 0) {
-      Logger.updateEntries();
-    }
-    counter += 1;
 
-    // logger.run();
+    logger.run();
     
     // //test to see if drive perspective should change
     // if(oi.getMain().getTrigger()) {
@@ -284,11 +273,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    // if(oi.controller.getRawButtonPressed(11)) {
-    //   System.out.println("Running profile command");
-    //   double dist = SmartDashboard.getNumber("Auto distance", 5);
-    //   Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
-    // }
+    if(oi.getMain().getButtonWithId(11).wasJustPressed()) {
+      System.out.println("Running profile command");
+      double dist = SmartDashboard.getNumber("Auto distance", 5);
+      Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
+    }
 
   }
 
