@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.CargoArm;
 
 /**
@@ -41,7 +40,7 @@ public class CargoArmCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double power = oi.XboxGetAxis(RobotMap.XboxRightAxis);
+    double power = oi.getAuxiliary().getRightVerticalAxis();
     // System.out.println("Cargo arm joystick "+power);
 
 
@@ -60,9 +59,9 @@ public class CargoArmCommand extends Command {
 
     //TODO: override limit switch to intake/spit ball
 
-    if(oi.XboxGetButton(RobotMap.XboxButtonX)) {
+    if(oi.getAuxiliary().getButtonX().isPressed()) {
         cargoArm.intake();
-    } else if(oi.XboxGetButton(RobotMap.XboxButtonB)) {
+    } else if(oi.getAuxiliary().getButtonB().isPressed()) {
         cargoArm.spit();
     } else {
         cargoArm.off();

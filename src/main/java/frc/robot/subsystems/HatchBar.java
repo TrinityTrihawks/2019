@@ -12,25 +12,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.HatchBarCommand;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 //positive is towards robot body
 
-
-
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
-public class HatchBar extends Subsystem {
+public class HatchBar extends Subsystem implements Loggable {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -46,6 +40,7 @@ public class HatchBar extends Subsystem {
 
   Encoder liftEncoder;
 
+  @Log.Exclude
   OI oi;
 
   public enum SuctionState {
@@ -126,14 +121,16 @@ public class HatchBar extends Subsystem {
       // System.out.println("Compressor enabled: " + compressor.enabled());
   }
 
+  @Log(name = "Encoder")
   public double getEncoderValue() {
     return liftEncoder.get();
   }
 
-  
+  @Log(name = "Master voltage")
   public double getMasterLiftVoltage() {
     return masterBarLift.getMotorOutputVoltage();
   }
+  @Log(name = "Slave voltage")
   public double getSlaveLiftVoltage() {
     return slaveBarLift.getMotorOutputVoltage();
   }
@@ -146,13 +143,14 @@ public class HatchBar extends Subsystem {
     }
   }
 
-
+  @Log(name = "Arm angle")
   public double getArmAngle() {
     return (-1 * getEncoderValue()) + 90 + RobotMap.hatchBarStartingAngle;
     //This assumes that the unscaled encoder value increases as the arm moves away from the robot
     //If that is not the case, remove the -1
   }
 
+  @Log(name = "Gravity compensation")
   public double getGravityCompensation() {
     double encoderAngleInRadians = Math.toRadians(getArmAngle());
     return RobotMap.hatchBarMaintainPos * Math.cos(encoderAngleInRadians);
@@ -201,10 +199,12 @@ public class HatchBar extends Subsystem {
 
   // }
 
+  @Log.ToString(name = "Suction state")
   public SuctionState getSuctionState() {
     return suctionState;
   }
 
+  @Log(name = "Compressor")
   public boolean isCompressorEnabled() {
     return compressor.enabled();
   }
@@ -222,5 +222,9 @@ public class HatchBar extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new HatchBarCommand(this, oi));
+  }
+
+  public String configureLogName() {
+    return "Hatch Arm";
   }
 }

@@ -41,10 +41,10 @@ public class TeleopDrive extends Command {
   @Override
   protected void execute() {
     // get power values from the controller
-    double magnitude = oi.getJoystickVerticalAxis();
-    double twist = oi.getJoystickTwist();
-    double slider = oi.getSlider();
-    boolean shouldDriveStraight = oi.getJoystickSideButton();
+    double magnitude = oi.getMain().getVerticalAxis();
+    double twist = oi.getMain().getTwist();
+    double slider = oi.getMain().getSlider();
+    boolean shouldDriveStraight = oi.getMain().getSideThumb().isPressed();
     // boolean driveInReverse = Robot.oi.controller.getRawButton(RobotMap.driveInReverseButton); 
     //System.out.println("Drive straight: "+shouldDriveStraight);
 

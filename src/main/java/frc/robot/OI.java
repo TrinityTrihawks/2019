@@ -8,57 +8,172 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public class OI {
+public class OI implements Loggable {
 
-  public Joystick controller = new Joystick(RobotMap.controller);
+  private MainJoystick main = new MainJoystick();
+  private AuxiliaryJoystick aux = new AuxiliaryJoystick();
 
-  public Joystick XboxController = new Joystick(RobotMap.XboxController);
-
-  public double XboxGetAxis(int axisId) {
-    return XboxController.getRawAxis(axisId);
+  public MainJoystick getMain() {
+    return main;
   }
 
-  public boolean XboxGetButton(int buttonId) {
-    return XboxController.getRawButton(buttonId);
+  public AuxiliaryJoystick getAuxiliary() {
+    return aux;
   }
 
-  public double getJoystickVerticalAxis() {
-    return -1 * controller.getRawAxis(1);
+  @Log
+  public String hi() {
+    return "hi";
   }
 
-  public double getJoystickTwist() {
-    return controller.getTwist();
+  public class Button {
+
+    Joystick joy;
+    int id;
+
+    public Button(Joystick joy, int id) {
+      this.joy = joy;
+      this.id = id;
+    }
+
+    public boolean isPressed() {
+      //Note: the logger also calls this method
+      return joy.getRawButton(id);
+    }
+    public boolean wasJustPressed() {
+      return joy.getRawButtonPressed(id);
+    }
+    public boolean wasJustReleased() {
+      return joy.getRawButtonReleased(id);
+    }
   }
 
-  public boolean getJoystickSideButton() {
-    return controller.getRawButton(2);
+
+  public class MainJoystick implements Loggable {
+    private Joystick joy = new Joystick(RobotMap.controller);
+
+    Button trigger = new Button(joy, 1);
+    Button sideThumb = new Button(joy, 2);
+
+    @Log(name = "Twist")
+    public double getTwist() {
+      return joy.getTwist();
+    }
+    @Log(name = "Throttle")
+    public double getVerticalAxis() {
+      return -1 * joy.getRawAxis(1);
+    }
+    @Log(name = "Slider")
+    public double getSlider() {
+      return (-1 * joy.getRawAxis(3) + 1) / 2;
+    }
+    @Log(name = "Trigger", methodName = "isPressed")
+    public Button getTrigger() {
+      return trigger;
+    }
+    @Log(name = "Side thumb", methodName = "isPressed")
+    public Button getSideThumb() {
+      return sideThumb;
+    }
+
+    /**
+     * Only use if no other methods get your desired button
+     */
+    public Button getButtonWithId(int id) {
+      return new Button(joy, id);
+    }
+
+    public String configureLogName() {
+      return "Main";
+    }
   }
 
-  public double getSlider() {
-		double SliderVal = (-1 * controller.getRawAxis(3) + 1) / 2;
-		return SliderVal;
-  }
-  
-  public boolean getJoystickTrigger() {
-    // System.out.println("Pressed trigger");
-    return controller.getTriggerPressed();
+  public class AuxiliaryJoystick implements Loggable {
+    private Joystick xbox = new Joystick(RobotMap.XboxController);
+
+    Button x = new Button(xbox, RobotMap.XboxButtonX);
+    Button y = new Button(xbox, RobotMap.XboxButtonY);
+    Button a = new Button(xbox, RobotMap.XboxButtonA);
+    Button b = new Button(xbox, RobotMap.XboxButtonB);
+
+    Button leftBumper = new Button(xbox, RobotMap.XboxLeftBumper);
+    Button rightBumper = new Button(xbox, RobotMap.XboxRightBumper);
+    Button leftTrigger = new Button(xbox, RobotMap.XboxLeftTrigger);
+    Button rightTrigger = new Button(xbox, RobotMap.XboxRightTrigger);
+
+
+    @Log(name = "Left axis")
+    public double getLeftVerticalAxis() {
+      return xbox.getRawAxis(RobotMap.XboxLeftAxis);
+    }
+    @Log(name = "Right axis")
+    public double getRightVerticalAxis() {
+      return xbox.getRawAxis(RobotMap.XboxRightAxis);
+    }
+    @Log(name = "X", methodName = "isPressed")
+    public Button getButtonX() {
+      return x;
+    }
+    @Log(name = "Y", methodName = "isPressed")
+    public Button getButtonY() {
+      return y;
+    }
+    @Log(name = "A", methodName = "isPressed")
+    public Button getButtonA() {
+      return a;
+    }
+    @Log(name = "B", methodName = "isPressed")
+    public Button getButtonB() {
+      return b;
+    }
+    @Log(name = "Left bumper", methodName = "isPressed")
+    public Button getLeftBumper() {
+      return leftBumper;
+    }
+    @Log(name = "Right bumper", methodName = "isPressed")
+    public Button getRightBumper() {
+      return rightBumper;
+    }
+    @Log(name = "Left trigger", methodName = "isPressed")
+    public Button getLeftTrigger() {
+      return leftTrigger;
+    }
+    @Log(name = "Right trigger", methodName = "isPressed")
+    public Button getRightTrigger() {
+      return rightTrigger;
+    }
+
+    /**
+     * Only use if no other methods get your desired button
+     */
+    public Button getButtonWithId(int id) {
+      return new Button(xbox, id);
+    }
+
+    public String configureLogName() {
+      return "Auxiliary";
+    }
+
   }
 
-  public boolean getJoystickTopLeftButton() {
-    // System.out.println("Pressed top left button");
-    return controller.getRawButton(5);
-  } 
+  // public String configureLogName() {
+  //   return "Controls";
+  // }
 
-  public boolean getJoystickTopRightButton() {
-    // System.out.println("Pressed top right button");
-    return controller.getRawButton(6);
+  public boolean skipLayout() {
+    return false;
   }
 
+}
+
+/*
   public void testAllButtons() {
     if(controller.getRawButton(1)) {
       System.out.println("Pressed button 1");
@@ -86,6 +201,14 @@ public class OI {
       System.out.println("Pressed button 12");
     }
   }
+
+`*/
+
+
+
+
+
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -113,6 +236,3 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
-
-
-}

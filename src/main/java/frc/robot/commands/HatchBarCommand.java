@@ -39,7 +39,7 @@ public class HatchBarCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double power = oi.XboxController.getRawAxis(RobotMap.XboxLeftAxis);
+		double power = oi.getAuxiliary().getLeftVerticalAxis();
 
 		// System.out.println("angle: " + Robot.hatchBar.getArmAngle());
 
@@ -53,22 +53,22 @@ public class HatchBarCommand extends Command {
 		hatchBar.Lift(power);
 		// System.out.println("Hatch lift from command: " + power);
 
-		if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
+		if(oi.getAuxiliary().getRightBumper().isPressed()) {
 			hatchBar.suctionOff();
-		} else if(oi.XboxController.getRawButton(RobotMap.XboxLeftBumper)) {
+		} else if(oi.getAuxiliary().getLeftBumper().isPressed()) {
 			hatchBar.suctionIn();
 		}
 		// } else if(oi.XboxController.getRawButton(RobotMap.XboxRightBumper)) {
 		// 	hatchBar.suctionOut();
 		// }
 
-		if(oi.XboxController.getRawButtonPressed(RobotMap.XboxLeftTrigger)) {
+		if(oi.getAuxiliary().getLeftTrigger().isPressed()) {
 			hatchBar.releaseAir();
-		} else if(oi.XboxController.getRawButtonPressed(RobotMap.XboxRightTrigger)) {
+		} else if(oi.getAuxiliary().getRightTrigger().isPressed()) {
 			hatchBar.keepAir();
 		}
 
-		if(oi.XboxController.getRawButton(RobotMap.XboxRightTrigger)) {
+		if(oi.getAuxiliary().getRightTrigger().wasJustPressed()) {
 			hatchBar.overrideArmLimits();
 		}
 
