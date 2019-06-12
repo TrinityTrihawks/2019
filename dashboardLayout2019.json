@@ -31,13 +31,45 @@
           },
           "6,0": {
             "size": [
-              3,
-              2
+              5,
+              5
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Auto distance",
-              "_title": "/SmartDashboard/Auto distance"
+              "_type": "Subsystem Layout",
+              "_title": "Profiling Properties",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Auto distance",
+                  "_title": "Auto distance"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Max Velocity",
+                  "_title": "Max Velocity"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Max Acceleration",
+                  "_title": "Max Acceleration"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Max Voltage",
+                  "_title": "Max Voltage"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Left Scalar",
+                  "_title": "Left Scalar"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Right Scalar",
+                  "_title": "Right Scalar"
+                }
+              ]
             }
           }
         }
@@ -203,9 +235,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
+    "x": -7.0,
     "y": 0.0,
-    "width": 1366.0,
-    "height": 735.0
+    "width": 1376.0,
+    "height": 534.0
   }
 }
