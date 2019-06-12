@@ -87,5 +87,20 @@ public class RobotMap {
   public static final double hatchBarMaintainPos = 0.125;
   //TODO: measure hatch bar starting angle
   public static final double hatchBarStartingAngle = 135;
+
+
+  //Autonomous Driving
+  public static final double voltageMax = 12; // max volts we can count on (even if battery at 12.0V)
+	public static final double voltageDead = 1; // deadband where robot does not accel (V)
+  public static final double maxVel = 9; // ft/sec
+	public static final double maxAccel = 10; // ft/sec^2
+	//account for differences in the sides of the drivetrain
+	public static final double leftScalar = 1;
+	public static final double rightScalar = 0.96;
+
+
+
+
+
   
 }

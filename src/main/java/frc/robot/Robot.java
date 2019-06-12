@@ -22,8 +22,10 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
 import frc.robot.GlobalState.DrivePerspectives;
+import frc.robot.commands.DriveAtVoltage;
 import frc.robot.commands.DriveBlindProfile;
 import frc.robot.logging.ContinuousLogger;
+import frc.robot.logging.LogOnceQueue;
 import frc.robot.logging.LogToShuffleboard;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drivetrain;
@@ -46,7 +48,7 @@ public class Robot extends TimedRobot {
   //Subsystems
   private final Drivetrain drivetrain;
   private final CargoArm cargoArm;
-  private final HatchBar hatchBar;
+  // private final HatchBar hatchBar;
 
   //Comands
   // private final CargoArmCommand cargoArmCommand;
@@ -55,6 +57,7 @@ public class Robot extends TimedRobot {
 
   private int counter = 0;
   private final ContinuousLogger logger;
+  private final LogOnceQueue logQueue;
 
   public Robot() {
     super(); //TimedRobot has a constructor
@@ -66,13 +69,14 @@ public class Robot extends TimedRobot {
 
     drivetrain = createDrivetrain(oi, state);
     cargoArm = createCargoArm(oi);
-    hatchBar = createHatchBar(oi);
+    // hatchBar = createHatchBar(oi);
 
     // teleopDrive = new TeleopDrive(drivetrain, oi, state);
     // cargoArmCommand = new CargoArmCommand(cargoArm, oi);
     // hatchBarCommand = new HatchBarCommand(hatchBar, oi);
 
     logger = new ContinuousLogger(new LogToShuffleboard());
+    logQueue = new LogOnceQueue(1);
 
   }
 
@@ -126,7 +130,7 @@ public class Robot extends TimedRobot {
     //subsystems
     logger.add("Drivetrain subsystem", () -> drivetrain, 25);
     logger.add("Cargo Arm subsystem", () -> cargoArm, 25);
-    logger.add("Hatch Bar subystem", () -> hatchBar, 25);
+    // logger.add("Hatch Bar subystem", () -> hatchBar, 25);
 
     
     // joystick controls
@@ -142,26 +146,31 @@ public class Robot extends TimedRobot {
     logger.add("Front left voltage", drivetrain::getFrontLeftVoltage, 5);
     logger.add("Front right voltage", drivetrain::getFrontRightVoltage, 5);
 
-    //hatch bar
-    logger.add("Hatch lift master voltage", hatchBar::getMasterLiftVoltage, 5);
-    logger.add("Hatch lift slave voltage", hatchBar::getSlaveLiftVoltage, 5);
-    logger.add("Hatch encoder value", hatchBar::getEncoderValue, 5);
-    logger.add("Hatch arm angle", hatchBar::getArmAngle, 5);
-    logger.add("Hatch gravity compensation", hatchBar::getGravityCompensation, 5);
-    logger.add("Hatch suction state", () -> hatchBar.getSuctionState().toString(), 5);
-    logger.add("Compressor enabled", hatchBar::isCompressorEnabled, 5);
+    // //hatch bar
+    // logger.add("Hatch lift master voltage", hatchBar::getMasterLiftVoltage, 5);
+    // logger.add("Hatch lift slave voltage", hatchBar::getSlaveLiftVoltage, 5);
+    // logger.add("Hatch encoder value", hatchBar::getEncoderValue, 5);
+    // logger.add("Hatch arm angle", hatchBar::getArmAngle, 5);
+    // logger.add("Hatch gravity compensation", hatchBar::getGravityCompensation, 5);
+    // logger.add("Hatch suction state", () -> hatchBar.getSuctionState().toString(), 5);
+    // logger.add("Compressor enabled", hatchBar::isCompressorEnabled, 5);
 
     //cargo arm
     logger.add("Cargo arm lift voltage",cargoArm::getLiftVoltage, 5);
     logger.add("Cargo arm intake voltage", cargoArm::getIntakeVoltage, 5);
 
 
-    SmartDashboard.putNumber("Auto distance", 5);
+    logQueue.add(() -> SmartDashboard.putNumber("Auto distance", 5));
+    logQueue.add(() -> SmartDashboard.putNumber("Max Velocity", RobotMap.maxVel));
+    logQueue.add(() -> SmartDashboard.putNumber("Max Acceleration", RobotMap.maxAccel));
+    logQueue.add(() -> SmartDashboard.putNumber("Max Voltage", RobotMap.voltageMax));
+    logQueue.add(() -> SmartDashboard.putNumber("Deadband Voltage", RobotMap.voltageDead));
+    logQueue.add(() -> SmartDashboard.putNumber("Left Scalar", RobotMap.leftScalar));
+    logQueue.add(() -> SmartDashboard.putNumber("Right Scalar", RobotMap.rightScalar));
 
-
-    SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(cargoArm);
-    SmartDashboard.putData(hatchBar);
+    // SmartDashboard.putData(drivetrain);
+    // SmartDashboard.putData(cargoArm);
+    // SmartDashboard.putData(hatchBar);
 
 
     //run commands from SmartDashboard
@@ -191,7 +200,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
+    if(counter > 50) {
+      logQueue.enable();
+    }
+
     logger.run();
+    logQueue.run();
+
+    counter++;
     
     // //test to see if drive perspective should change
     // if(oi.getMain().getTrigger()) {
@@ -273,10 +289,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    if(oi.getMain().getButtonWithId(11).wasJustPressed()) {
+    if(oi.getMain().getKeypad11().wasJustPressed()) {
       System.out.println("Running profile command");
       double dist = SmartDashboard.getNumber("Auto distance", 5);
       Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
+    }
+
+    if(oi.getMain().getKeypad12().wasJustPressed()) {
+      System.out.println("Running steady voltage command");
+      double voltage = 12;
+      double duration = 0.5; // seconds
+      Scheduler.getInstance().add(new DriveAtVoltage(drivetrain, voltage, duration));
     }
 
   }

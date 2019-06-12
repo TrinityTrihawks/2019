@@ -54,6 +54,8 @@ public class OI {
 
     Button trigger = new Button(joy, 1);
     Button sideThumb = new Button(joy, 2);
+    Button keypad11 = new Button(joy, 11);
+    Button keypad12 = new Button(joy, 12);
 
     public double getTwist() {
       return joy.getTwist();
@@ -69,6 +71,12 @@ public class OI {
     }
     public Button getSideThumb() {
       return sideThumb;
+    }
+    public Button getKeypad11() {
+      return keypad11;
+    }
+    public Button getKeypad12() {
+      return keypad12;
     }
 
     /**
