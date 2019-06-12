@@ -10,7 +10,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.GlobalState;
 import frc.robot.OI;
-import frc.robot.GlobalState.DrivePerspectives;
 import frc.robot.subsystems.Drivetrain;
 
 

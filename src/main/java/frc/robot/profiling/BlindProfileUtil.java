@@ -29,6 +29,7 @@ public class BlindProfileUtil {
         double time;
         double accel;
         double vel = 0;
+        double pos = 0;
 
         for(int i=0; i<frameNum; i++) {
             // 1. Calculate time stamp
@@ -49,8 +50,11 @@ public class BlindProfileUtil {
             // 3. Calculate velocity
             vel += accel * dt;
 
-            // 4. Store this frame's calculations
-            trajectory[i] = new TrajectoryPoint(time, vel, accel);
+            // 4. Calculate position
+            pos += vel * dt;
+
+            // 5. Store this frame's calculations
+            trajectory[i] = new TrajectoryPoint(time, accel, vel, pos);
         }
 
         return trajectory;
