@@ -5,7 +5,6 @@ import org.junit.*;
 import frc.robot.GlobalState;
 import frc.robot.OI;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;

@@ -21,7 +21,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
-import frc.robot.GlobalState.DrivePerspectives;
 import frc.robot.commands.DriveAtVoltage;
 import frc.robot.commands.DriveBlindProfile;
 import frc.robot.logging.ContinuousLogger;

@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
