@@ -210,26 +210,6 @@ public class Robot extends TimedRobot {
     logQueue.run();
 
     counter++;
-    
-    // //test to see if drive perspective should change
-    // if(oi.getMain().getTrigger()) {
-    //   if(state.getPerspective() == DrivePerspectives.CARGO) {
-    //     state.setPerspective(DrivePerspectives.HATCH);
-    //     System.out.println("Drive perspective switched to HATCH");
-    //   } else {
-    //     state.setPerspective(DrivePerspectives.CARGO);
-    //     System.out.println("Drive perspective switched to CARGO");
-    //   }
-    // }
-
-    // //update dashboard camera stream to current drive perspective
-    // if(state.getPerspective() == DrivePerspectives.CARGO) {
-    //   NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraBack.getName());
-    //   // System.out.println("Back camera currently displayed");
-    // } else {
-    //   NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection").setString(cameraFront.getName());
-    //   // System.out.println("Front camera currently displayed");
-    // }
 
   }
 
@@ -290,26 +270,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    if(oi.getMain().getKeypad11().wasJustPressed()) {
-      System.out.println("Running profile command");
-      double dist = SmartDashboard.getNumber("Auto distance", 5);
-      Scheduler.getInstance().add(new DriveBlindProfile(drivetrain, dist));
-    }
-
-    if(oi.getMain().getKeypad12().wasJustPressed()) {
-      System.out.println("Running steady voltage command");
-      double voltage = 12;
-      double duration = 0.5; // seconds
-      Scheduler.getInstance().add(new DriveAtVoltage(drivetrain, voltage, duration));
-    }
-
-    if(oi.getMain().getTrigger().wasJustPressed()) {
-      System.out.println("Running rotation profile command");
-      double angle = SmartDashboard.getNumber("Rotation", 90); //degrees
-      // double angle = -180;
-      Scheduler.getInstance().add(new RotateBlind(drivetrain, angle));
-    }
 
   }
 
