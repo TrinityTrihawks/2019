@@ -23,6 +23,7 @@ import edu.wpi.cscore.AxisCamera;
 import frc.robot.GlobalState;
 import frc.robot.commands.DriveAtVoltage;
 import frc.robot.commands.DriveBlindProfile;
+import frc.robot.commands.RotateBlind;
 import frc.robot.logging.ContinuousLogger;
 import frc.robot.logging.LogOnceQueue;
 import frc.robot.logging.LogToShuffleboard;
@@ -167,6 +168,8 @@ public class Robot extends TimedRobot {
     logQueue.add(() -> SmartDashboard.putNumber("Left Scalar", RobotMap.leftScalar));
     logQueue.add(() -> SmartDashboard.putNumber("Right Scalar", RobotMap.rightScalar));
 
+    SmartDashboard.putNumber("Rotation", 90);
+
     // SmartDashboard.putData(drivetrain);
     // SmartDashboard.putData(cargoArm);
     // SmartDashboard.putData(hatchBar);
@@ -299,6 +302,13 @@ public class Robot extends TimedRobot {
       double voltage = 12;
       double duration = 0.5; // seconds
       Scheduler.getInstance().add(new DriveAtVoltage(drivetrain, voltage, duration));
+    }
+
+    if(oi.getMain().getTrigger().wasJustPressed()) {
+      System.out.println("Running rotation profile command");
+      double angle = SmartDashboard.getNumber("Rotation", 90); //degrees
+      // double angle = -180;
+      Scheduler.getInstance().add(new RotateBlind(drivetrain, angle));
     }
 
   }

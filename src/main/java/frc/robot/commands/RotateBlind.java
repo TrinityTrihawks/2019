@@ -11,7 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class DriveBlindProfile extends Command {
+public class RotateBlind extends Command {
 
     private final Drivetrain drivetrain;
 	private final TrajectoryPoint[] trajectory;
@@ -29,7 +29,9 @@ public class DriveBlindProfile extends Command {
 	private double[] actualVoltageLeft;
 	private double[] actualVoltageRight;
 
-	public DriveBlindProfile(Drivetrain drivetrain, double distance) {
+	private boolean shouldTurnLeft;
+
+	public RotateBlind(Drivetrain drivetrain, double angle) {
 		this.drivetrain = drivetrain;
 
 		double maxVel = SmartDashboard.getNumber("Max Velocity", RobotMap.maxVel);
@@ -37,16 +39,24 @@ public class DriveBlindProfile extends Command {
 		double voltageMax = SmartDashboard.getNumber("Max Voltage", RobotMap.voltageMax);
 		double leftScalar = SmartDashboard.getNumber("Left Scalar", RobotMap.leftScalar);
 		double rightScalar = SmartDashboard.getNumber("Right Scalar", RobotMap.rightScalar);
-		voltageDead = SmartDashboard.getNumber("Deadband Voltage", RobotMap.voltageDead);
+        voltageDead = SmartDashboard.getNumber("Deadband Voltage", RobotMap.voltageDead);
+        
+        double radius = 1.9166 / 2;
+		double arcLength = angle * 2*Math.PI/360 * radius;
+		if(angle < 0) {
+			arcLength *= -1;
+			shouldTurnLeft = false;
+		} else {
+			shouldTurnLeft = true;
+		}
 
-			
 		Kv_left = (voltageMax * leftScalar - voltageDead) / maxVel;
 		Kv_right = (voltageMax * rightScalar - voltageDead) / maxVel;
 		Ka_left = voltageMax * leftScalar / maxVel;
 		Ka_right = voltageMax * rightScalar / maxVel;
 
-		trajectory = BlindProfileUtil.generateStraightLineTrajectory(distance, maxVel, maxAccel);
-		
+        trajectory = BlindProfileUtil.generateStraightLineTrajectory(arcLength, maxVel, maxAccel);
+        
 		actualVoltageLeft = new double[trajectory.length];
 		actualVoltageRight = new double[trajectory.length];
 		desiredVoltageLeft = new double[trajectory.length];
@@ -72,8 +82,8 @@ public class DriveBlindProfile extends Command {
 		double motorVoltage_left = Kv_left * vel + Ka_left * accel * 0.02 + voltageDead;
 		double motorVoltage_right = Kv_right * vel + Ka_right * accel * 0.02 + voltageDead;
 
-		double modifiedMV_left = motorVoltage_left * 1;
-		double modifiedMV_right = motorVoltage_right * 1;
+		double modifiedMV_left = motorVoltage_left * (shouldTurnLeft ? -1 : 1);
+		double modifiedMV_right = motorVoltage_right * (shouldTurnLeft ? 1 : -1);
 		drivetrain.Drive(modifiedMV_left / 12, modifiedMV_right / 12);
 
 		actualVoltageLeft[counter] = drivetrain.getFrontLeftVoltage();
@@ -107,7 +117,6 @@ public class DriveBlindProfile extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		System.out.println("Drive blind commmand done");
 		drivetrain.Drive(0,0);
 
 		double time[] = new double[trajectory.length];

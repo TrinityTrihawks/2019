@@ -68,6 +68,11 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Right Scalar",
                   "_title": "Right Scalar"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Rotation",
+                  "_title": "SmartDashboard/Rotation"
                 }
               ]
             }

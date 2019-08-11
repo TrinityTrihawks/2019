@@ -57,10 +57,12 @@ public class Drivetrain extends Subsystem {
 		// slaveLeft.set(ControlMode.Follower, RobotMap.frontLeftWheel);
 		// slaveRight.set(ControlMode.Follower, RobotMap.frontRightWheel);
 
+		//set front wheels in coast made and back wheels in 
+		//brake mode for moderate braking
 		masterRight.setNeutralMode(NeutralMode.Coast);
 		masterLeft.setNeutralMode(NeutralMode.Coast);
-		slaveRight.setNeutralMode(NeutralMode.Coast);
-		slaveLeft.setNeutralMode(NeutralMode.Coast);
+		slaveRight.setNeutralMode(NeutralMode.Brake);
+		slaveLeft.setNeutralMode(NeutralMode.Brake);
 
 		masterRight.setInverted(true);
 		slaveRight.setInverted(true);
